@@ -5,7 +5,7 @@ int main() {
 
 	struct core_window_Window window;
 
-	core_window_windowInit(*window, 800, 600, "");
+	core_window_windowInit(&window, 800, 600, "");
 
 	return 0;
 }

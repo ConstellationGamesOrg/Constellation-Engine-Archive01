@@ -1,5 +1,5 @@
-#ifndef MAINH
-#define MAINH
+#ifndef WINDOWH
+#define WINDOWH
 
 // Thirdparty
 #include <glad/glad.h>

@@ -1,5 +1,5 @@
-#ifndef INTH
-#define INTH
+#ifndef GRAPHICSH
+#define GRAPHICSH
 
 // Thirdparty
 #include <glad/glad.h>
