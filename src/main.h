@@ -1,6 +1,10 @@
 #ifndef MAINH
 #define MAINH
 
+// Constellation Engine
+#include "core/window/window.h"
+#include "core/graphics/graphics.h"
+
 // Thirdparty
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -13,6 +17,8 @@
 // Standard
 #include <stdio.h>
 
+// Macros
+#define DEBUG
 
 // Functions
 int main();
