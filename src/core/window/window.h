@@ -9,10 +9,15 @@
 #include <stdio.h>
 #include <string.h>
 
+// Macros
+#define UNUSED(x) (void)(x)
+
 // Structs
 struct core_window_Window {
 	int width;
 	int height;
+	int shouldClose;
+
 	char* title;
 
 	GLFWwindow* window;
@@ -20,6 +25,9 @@ struct core_window_Window {
 
 // Functions
 int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title);
+int core_window_refresh(struct core_window_Window* window);
+int core_window_cleanup();
 
+void core_window_framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
 #endif

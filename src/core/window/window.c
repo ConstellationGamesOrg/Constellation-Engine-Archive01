@@ -1,11 +1,11 @@
 #include "window.h"
 
 int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title) {
-// 	if (window == NULL) {
-// #ifndef DEBUG
-// 		printf("WARNING: No core_window_Window object was given to core_window_windowInit. You will not be able to use this window object in the future (You will probably need to).\n");
-// #endif
-// 	}
+	if (window == NULL) {
+#ifndef DEBUG
+		printf("WARNING: No core_window_Window object was given to core_window_windowInit. You will not be able to use this window object in the future (You will need to).\n");
+#endif
+	}
 
 	if (width == 0) {
 		width = 800;
@@ -19,37 +19,16 @@ int core_window_windowInit(struct core_window_Window* window, int width, int hei
 		title = "Constellation Engine Window";
 	}
 
-// 	struct core_window_Window* window = {
-// 		width = width;
-// 		height = height;
-// 		title = title;
-//
-// 		window = glfwCreateWindow(width, height, title, NULL, NULL);
-// 	}
-
-// 	window.width = width;
-// 	window.height = height;
-// 	window.title = title;
-//
-// 	window.window = glfwCreateWindow(width, height, title, NULL, NULL);
-//
-// 	if (window.window == NULL) {
-// 		printf("Window creation FAILED!\n");
-//
-// 		glfwTerminate();
-// 		return -1;
-// 	}
-//
-// 	glfwMakeContextCurrent(window.window);
-
 	window->width = width;
 	window->height = height;
+	window->shouldClose = 0;
+
 	window->title = title;
 
 	window->window = glfwCreateWindow(width, height, title, NULL, NULL);
 
 	if (window->window == NULL) {
-		printf("Window creation FAILED!\n");
+		printf("ERROR: Window creation FAILED!\n");
 
 		glfwTerminate();
 		return -1;
@@ -58,12 +37,43 @@ int core_window_windowInit(struct core_window_Window* window, int width, int hei
 	glfwMakeContextCurrent(window->window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		printf("GLAD initialization FAILED!\n");
+		printf("ERROR: GLAD initialization FAILED!\n");
 
 		return -1;
 	}
 
 	glViewport(0, 0, window->width, window->height);
 
+	glfwSetFramebufferSizeCallback(window->window, core_window_framebufferSizeCallback);
+
 	return 0;
+}
+
+int core_window_refresh(struct core_window_Window* window) {
+	if (window == NULL) {
+		printf("ERROR: No core_window_Window object was given to the core_window_refresh function.\n");
+
+		return -1;
+	}
+
+
+	glfwSwapBuffers(window->window);
+	glfwPollEvents();
+
+	if (glfwWindowShouldClose(window->window)) {
+		window->shouldClose = 1;
+	}
+
+	return 0;
+}
+
+int core_window_cleanup() {
+	glfwTerminate();
+
+	return 0;
+}
+
+void core_window_framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+	UNUSED(window);
+	glViewport(0, 0, width, height);
 }
