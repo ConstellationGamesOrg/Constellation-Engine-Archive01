@@ -12,12 +12,16 @@ int main() {
 	while (!window.shouldClose) {
 		if (core_input_isPressed(&window, KEY_ESCAPE) == 1) {
 			window.shouldClose = true;
+		}
+
+		if (core_input_isPressed(&window, KEY_RIGHT) == 1) {
+			window.clearColour[1] += 0.01f;
 		} if (core_input_isPressed(&window, KEY_LEFT) == 1) {
 			window.clearColour[1] -= 0.01f;
-		} if (core_input_isPressed(&window, KEY_UP) == 1) {
+		}
+
+		if (core_input_isPressed(&window, KEY_UP) == 1) {
 			window.clearColour[0] += 0.01f;
-		} if (core_input_isPressed(&window, KEY_RIGHT) == 1) {
-			window.clearColour[1] += 0.01f;
 		} if (core_input_isPressed(&window, KEY_DOWN) == 1) {
 			window.clearColour[0] -= 0.01f;
 		}
