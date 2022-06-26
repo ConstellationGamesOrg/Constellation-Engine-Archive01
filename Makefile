@@ -9,10 +9,10 @@ macdeps:
 	curl -O https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && sudo chmod a+x install.sh && ./install.sh && echo "export PATH=/usr/local/bin:$PATH" >> ~/.zshrc && source ~/.zshrc && brew install glfw && brew install cglm
 
 mac:
-	gcc -Wall -O3 -Ilib/ $(MAC_PARAMS) -lglfw -lglm $(COMPILE_FILES) -o main.out && ./main.out
+	gcc -Wall -O3 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm $(COMPILE_FILES) -o main.out && ./main.out
 
 macdebug:
-	gcc -Wall -Wextra -O0 -Ilib/ $(MAC_PARAMS) -lglfw -lglm $(COMPILE_FILES) -o main.out && ./main.out
+	gcc -Wall -Wextra -O0 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm $(COMPILE_FILES) -o main.out && ./main.out
 
 archx11deps:
 	sudo pacman -S glfw-x11 && git clone https://github.com/recp/cglm && cd cglm && mkdir build && cd build && cmake .. && make && sudo make install
