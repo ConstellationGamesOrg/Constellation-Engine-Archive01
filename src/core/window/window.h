@@ -29,7 +29,8 @@ struct core_window_Window {
 
 // Functions
 int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title, vec4 clearColor);
-int core_window_refresh(struct core_window_Window* window);
+int core_window_clear(struct core_window_Window* window);
+int core_window_update(struct core_window_Window* window);
 int core_window_cleanup();
 
 void core_window_framebufferSizeCallback(GLFWwindow* window, int width, int height);

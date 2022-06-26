@@ -1,4 +1,4 @@
-COMPILE_FILES = src/main.c src/core/graphics/graphics.c src/core/window/window.c src/core/input/input.c lib/glad/src/glad.c
+COMPILE_FILES = src/main.c src/core/graphics/graphics.c src/core/window/window.c src/core/input/input.c src/util/util.c lib/glad/src/glad.c
 
 MAC_PARAMS = -I/Library/Frameworks/OpenGL.framework/Headers/ -I/Library/Frameworks/GLUT.framework/Headers/ -F/Library/Frameworks -framework Cocoa -framework OpenGL -framework GLUT -framework IOKit -framework CoreVideo
 
