@@ -1,6 +1,6 @@
 #include "window.h"
 
-int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title, vec4 clearColour) {
+int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title, vec4 clearColor) {
 	if (window == NULL) {
 #ifndef DEBUG
 		printf("WARNING: No core_window_Window object was given to core_window_windowInit. You will not be able to use this window object in the future (You will need to).\n");
@@ -27,10 +27,10 @@ int core_window_windowInit(struct core_window_Window* window, int width, int hei
 
 	window->window = glfwCreateWindow(width, height, title, NULL, NULL);
 
-	window->clearColour[0] = clearColour[0];
-	window->clearColour[1] = clearColour[1];
-	window->clearColour[2] = clearColour[2];
-	window->clearColour[3] = clearColour[3];
+	window->clearColor[0] = clearColor[0];
+	window->clearColor[1] = clearColor[1];
+	window->clearColor[2] = clearColor[2];
+	window->clearColor[3] = clearColor[3];
 
 	if (window->window == NULL) {
 		printf("ERROR: Window creation FAILED!\n");
@@ -61,7 +61,7 @@ int core_window_refresh(struct core_window_Window* window) {
 		return -1;
 	}
 
-	glClearColor(window->clearColour[0], window->clearColour[1], window->clearColour[2], window->clearColour[3]);
+	glClearColor(window->clearColor[0], window->clearColor[1], window->clearColor[2], window->clearColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glfwSwapBuffers(window->window);

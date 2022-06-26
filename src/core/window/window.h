@@ -24,11 +24,11 @@ struct core_window_Window {
 
 	GLFWwindow* window;
 
-	vec4 clearColour;
+	vec4 clearColor;
 };
 
 // Functions
-int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title, vec4 clearColour);
+int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title, vec4 clearColor);
 int core_window_refresh(struct core_window_Window* window);
 int core_window_cleanup();
 

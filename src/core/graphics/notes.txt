@@ -1,0 +1,9 @@
+Graphics pipeline - 3D to 2D coordinates and colouring
+
+STEPS:
+1. The vertex shader - Takes input a single vertex and transforms 3D coordinates into different 3D coordinates & allows doing some basic processing on vertex attributes - You make this
+2. Primitive assembly - Takes input all the vertices or vertex from teh vertex shader what form a primitive and assembles all the point(s) (draws lines from vertex to vertex) - OpenGL does this
+3. The geometry shader - Takes as input a collection of vertices than form a primitive (from the primitive assembly) and has the ability to generate other shapes by adding new vertices to form other primitives (or new primitives) - You make this
+4. Rasterization - Takes as input the output of the geometry shader and OpenGL maps the primitives to the corresponding pixels on the screen resulting in fragments for the fragment shader to use, then clipping is performed (all fragments outside your view are deleted) - OpenGL does this
+5. Fragment shader - Calculate the final colour of pixels and  - You make this
+6. Tests and blending - OpenGL does this
