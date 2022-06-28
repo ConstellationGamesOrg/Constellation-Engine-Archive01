@@ -33,5 +33,6 @@ int core_graphics_setGlVer(struct core_graphics_settings* graphicsSettings, int 
 int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettings);
 int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld, float vertices[], char* vertPath, char* fragPath);
 int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld);
+int core_graphics_cleanup(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld);
 
 #endif

@@ -55,52 +55,46 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 		return -1;
 	}
 
-	// Generate IDs for the buffers
-	glGenBuffers(1, &graphicsObj->VBO);
-	glGenVertexArrays(1, &graphicsObj->VAO);
+	// Build and compile shaderProgram
 
-	glBindBuffer(GL_ARRAY_BUFFER, graphicsObj->VBO);
-	
-	// Copy the vertex data into the buffer's memory
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-
+	// Vertex Shader
 	const char* vertexShaderSource = util_readFile(vertPath);
 
-	if (vertexShaderSource == NULL)
-		return -1;
-
 	graphicsObj->vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
 	glShaderSource(graphicsObj->vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(graphicsObj->vertexShader);
 
+	// Check for shader compilation errors
 	int success;
 	char infoLog[512];
+
 	glGetShaderiv(graphicsObj->vertexShader, GL_COMPILE_STATUS, &success);
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->vertexShader, 512, NULL, infoLog);
 #ifdef DEBUG
-		printf("ERROR: Compilation of shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
+		printf("ERROR: Compilation of vertex shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
 #endif
 	}
 
-	graphicsObj->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
+	// Fragment shader
 	const char* fragmentShaderSource = util_readFile(fragPath);
 
-	glShaderSource(graphicsObj->fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(graphicsObj->fragmentShader);
+	graphicsObj->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
+	glShaderSource(graphicsObj->fragmentShader, 1, &fragmentShaderSource, NULL);
+
+	// Check for shader compilation errors
 	glGetShaderiv(graphicsObj->fragmentShader, GL_COMPILE_STATUS, &success);
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->fragmentShader, 512, NULL, infoLog);
 #ifdef DEBUG
-		printf("ERROR: Compilation of shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
+		printf("ERROR: Compilation of fragment shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
 #endif
 	}
 
+	// Link shaders
 	graphicsWorld->shaderProgram = glCreateProgram();
 
 	glAttachShader(graphicsWorld->shaderProgram, graphicsObj->vertexShader);
@@ -108,25 +102,37 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	glLinkProgram(graphicsWorld->shaderProgram);
 
+	// Check for linking errors
 	glGetProgramiv(graphicsWorld->shaderProgram, GL_LINK_STATUS, &success);
 
 	if (!success) {
 		glGetProgramInfoLog(graphicsWorld->shaderProgram, 512, NULL, infoLog);
-
 #ifdef DEBUG
 		printf("WARNING: Linking shaders to the shader program FAILED Full output:\n%s\n", infoLog);
 #endif
-		return -1;
 	}
-
-	glUseProgram(graphicsWorld->shaderProgram);
 
 	// Cleanup
 	glDeleteShader(graphicsObj->vertexShader);
 	glDeleteShader(graphicsObj->fragmentShader);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	// Generate IDs for the buffers
+	glGenVertexArrays(1, graphicsObj->VAO);
+	glGenBuffers(1, graphicsObj->VBO);
+
+	// Bind the VAO first then bind + set vertex buffers then configure vertex attribs
+	glBindVertexArray(graphicsObj->VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, graphicsObj->VBO);
+	
+	// Copy the vertex data into the buffer's memory
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	// Unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	return 0;
 }
@@ -135,6 +141,14 @@ int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_grap
 	glUseProgram(graphicsWorld->shaderProgram);
 	glBindVertexArray(graphicsObj->VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	return 0;
+}
+
+int core_graphics_cleanup(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld) {
+	glDeleteVertexArrays(1, graphicsObj->VAO);
+	glDeleteBuffers(1, graphicsObj->VBO);
+	glDeleteProgram(graphicsWorld->shaderProgram);
 
 	return 0;
 }

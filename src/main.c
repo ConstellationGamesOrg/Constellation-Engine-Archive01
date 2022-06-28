@@ -1,11 +1,11 @@
 #include "main.h"
 
 int main() {
-	float vertices[] = {
-		-0.5f, -0.5f,  0.0f,
-		 0.5f, -0.5f,  0.0f,
-		 0.0f,  0.5f,  0.0f
-	};
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, // left
+         0.5f, -0.5f, 0.0f, // right
+         0.0f,  0.5f, 0.0f  // top
+    };
 
 	core_graphics_graphicsSettings(NULL);
 
