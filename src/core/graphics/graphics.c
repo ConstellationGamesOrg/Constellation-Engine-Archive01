@@ -117,8 +117,8 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 	glDeleteShader(graphicsObj->fragmentShader);
 
 	// Generate IDs for the buffers
-	glGenVertexArrays(1, graphicsObj->VAO);
-	glGenBuffers(1, graphicsObj->VBO);
+	glGenVertexArrays(1, &graphicsObj->VAO);
+	glGenBuffers(1, &graphicsObj->VBO);
 
 	// Bind the VAO first then bind + set vertex buffers then configure vertex attribs
 	glBindVertexArray(graphicsObj->VAO);
@@ -146,8 +146,8 @@ int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_grap
 }
 
 int core_graphics_cleanup(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld) {
-	glDeleteVertexArrays(1, graphicsObj->VAO);
-	glDeleteBuffers(1, graphicsObj->VBO);
+	glDeleteVertexArrays(1, &graphicsObj->VAO);
+	glDeleteBuffers(1, &graphicsObj->VBO);
 	glDeleteProgram(graphicsWorld->shaderProgram);
 
 	return 0;
