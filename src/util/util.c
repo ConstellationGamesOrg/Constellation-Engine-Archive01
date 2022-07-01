@@ -26,7 +26,7 @@ const char* util_readFile(char* filePath) {
 		free(buffer);
 
 #ifdef _DEBUG
-		printf("ERROR: fread FAILED\n")
+		printf("ERROR: fread FAILED\n");
 #endif
 	}
 

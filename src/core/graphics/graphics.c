@@ -83,6 +83,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 	graphicsObj->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	glShaderSource(graphicsObj->fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(graphicsObj->fragmentShader);
 
 	// Check for shader compilation errors
 	glGetShaderiv(graphicsObj->fragmentShader, GL_COMPILE_STATUS, &success);
