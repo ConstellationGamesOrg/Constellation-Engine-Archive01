@@ -12,7 +12,7 @@ mac:
 	gcc -Wall -O3 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm $(COMPILE_FILES) -o main.out && ./main.out
 
 macdebug:
-	gcc -Wall -Wextra -O0 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm $(COMPILE_FILES) -o main.out && ./main.out
+	gcc -Wall -Wextra -O0 -D_DEBUG=1 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm $(COMPILE_FILES) -o main.out && ./main.out
 
 archx11deps:
 	sudo pacman -S glfw-x11 && git clone https://github.com/recp/cglm && cd cglm && mkdir build && cd build && cmake .. && make && sudo make install
@@ -27,10 +27,10 @@ linux:
 	gcc -Wall -O3 -o main.out $(COMPILE_FILES) -Ilib/ -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lrt -lm -lpthread && ./main.out
 
 linuxdebug:
-	gcc -Wall -Wextra -O0 -o main.out $(COMPILE_FILES) -Ilib/ -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lrt -lm -lpthread && ./main.out
+	gcc -Wall -Wextra -O0 -o main.out -D_DEBUG=1 $(COMPILE_FILES) -Ilib/ -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lrt -lm -lpthread && ./main.out
 
 windows:
-	gcc -Wall -O3 -o ConstellationEngine.exe -D_DEBUG=1 $(COMPILE_FILES) -Ilib/ -l../thirdparty/glfw-3.3.6.bin.WIN32/include/ -l../thirdparty/cglm-0.8.5/include/ && ./main.exe
+	gcc -Wall -O3 -o ConstellationEngine.exe $(COMPILE_FILES) -Ilib/ -l../thirdparty/glfw-3.3.6.bin.WIN32/include/ -l../thirdparty/cglm-0.8.5/include/ && ./ConstellationEngine.exe
 
 windowsdebug:
-	gcc -Wall -Wextra -O0 -o ConstellationEngine-debug.exe -D_DEBUG=1 $(COMPILE_FILES) -Ilib/ -l../thirdparty/glfw-3.3.6.bin.WIN32/include/ -l../thirdparty/cglm-0.8.5/include/ && ./main.exe
+	gcc -Wall -Wextra -O0 -o ConstellationEngine-debug.exe -D_DEBUG=1 $(COMPILE_FILES) -Ilib/ -l../thirdparty/glfw-3.3.6.bin.WIN32/include/ -l../thirdparty/cglm-0.8.5/include/ && ./ConstellationEngine-debug.exe
