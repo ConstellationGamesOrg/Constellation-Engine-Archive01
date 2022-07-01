@@ -154,26 +154,23 @@
     <ClCompile Include="src\util\util.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AUTHORS.md" />
-    <None Include="CHANGELOG.md" />
     <None Include="lib\glad\LICENSE" />
+    <None Include="lib\glfw\LICENSE.md" />
+    <None Include="lib\stb\LICENSE" />
     <None Include="README.md" />
+    <None Include="res\shaders\triangle\triangle.frag" />
+    <None Include="res\shaders\triangle\triangle.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE" />
-    <Text Include="res\img\placeHolder.txt" />
-    <Text Include="res\shaders\placeHolder.txt" />
     <Text Include="src\core\graphics\notes.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lib\glad\include\glad\glad.h" />
-    <ClInclude Include="lib\glad\include\khrplatform.h" />
     <ClInclude Include="src\core\graphics\graphics.h" />
     <ClInclude Include="src\core\input\input.h" />
     <ClInclude Include="src\core\window\window.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\util\util.h" />
-    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
