@@ -18,9 +18,6 @@
 // Standard
 #include <stdio.h>
 
-// Macros
-#define _DEBUG
-
 // Functions
 int main();
 
