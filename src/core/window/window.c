@@ -55,6 +55,7 @@ int core_window_windowInit(struct core_window_Window* window, int width, int hei
 }
 
 int core_window_clear(struct core_window_Window* window) {
+	glfwSwapInterval(1);
 	glClearColor(window->clearColor[0], window->clearColor[1], window->clearColor[2], window->clearColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT);
 
