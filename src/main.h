@@ -19,7 +19,7 @@
 #include <stdio.h>
 
 // Macros
-#define DEBUG
+#define _DEBUG
 
 // Functions
 int main();

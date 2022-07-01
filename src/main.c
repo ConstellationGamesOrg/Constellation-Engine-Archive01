@@ -27,13 +27,17 @@ int main() {
 
 		if (core_input_isPressed(&window, KEY_RIGHT) == 1) {
 			window.clearColor[1] += 0.01f;
-		} if (core_input_isPressed(&window, KEY_LEFT) == 1) {
+		}
+		
+		if (core_input_isPressed(&window, KEY_LEFT) == 1) {
 			window.clearColor[1] -= 0.01f;
 		}
 
 		if (core_input_isPressed(&window, KEY_UP) == 1) {
 			window.clearColor[0] += 0.01f;
-		} if (core_input_isPressed(&window, KEY_DOWN) == 1) {
+		}
+		
+		if (core_input_isPressed(&window, KEY_DOWN) == 1) {
 			window.clearColor[0] -= 0.01f;
 		}
 

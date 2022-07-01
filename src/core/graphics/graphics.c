@@ -28,28 +28,28 @@ int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettin
 
 int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld, float vertices[], char* vertPath, char* fragPath) {
 	if (graphicsObj == NULL) {
-#ifdef DEBUG
+#ifdef __DEBUG
 		printf("WARNING: No graphicsObj object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
 #endif
 		return -1;
 	}
 
 	if (graphicsWorld == NULL) {
-#ifdef DEBUG
+#ifdef __DEBUG
 		printf("WARNING: No graphicsworld object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
 #endif
 		return -1;
 	}
 
 	if (vertPath == NULL) {
-#ifdef DEBUG
+#ifdef __DEBUG
 		printf("WARNING: No vertPath was passed to core_graphics_createObj. Shader loading and compilation will fail.\n");
 #endif
 		return -1;
 	}
 
 	if (fragPath == NULL) {
-#ifdef DEBUG
+#ifdef __DEBUG
 		printf("WARNING: No fragPath was passed to core_graphics_createObj. Shader loading and compilation will fail.\n");
 #endif
 		return -1;
@@ -72,7 +72,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->vertexShader, 512, NULL, infoLog);
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("ERROR: Compilation of vertex shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
 #endif
 	}
@@ -89,7 +89,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->fragmentShader, 512, NULL, infoLog);
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("ERROR: Compilation of fragment shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
 #endif
 	}
@@ -107,7 +107,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetProgramInfoLog(graphicsWorld->shaderProgram, 512, NULL, infoLog);
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("WARNING: Linking shaders to the shader program FAILED Full output:\n%s\n", infoLog);
 #endif
 	}
@@ -120,19 +120,20 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 	glGenVertexArrays(1, &graphicsObj->VAO);
 	glGenBuffers(1, &graphicsObj->VBO);
 
-	// Bind the VAO first then bind + set vertex buffers then configure vertex attribs
-	glBindVertexArray(graphicsObj->VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, graphicsObj->VBO);
 	
 	// Copy the vertex data into the buffer's memory
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// Bind the VAO first then bind + set vertex buffers then configure vertex attribs
+	glBindVertexArray(graphicsObj->VAO);
+
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	// Unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 
 	return 0;
 }

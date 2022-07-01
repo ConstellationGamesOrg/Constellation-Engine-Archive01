@@ -15,7 +15,7 @@ const char* util_readFile(char* filePath) {
 
 	if(!buffer) {
 		fclose(fptr);
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("ERROR: Allocating memory in util_readFile FAILED\n");
 #endif
 	}
@@ -25,13 +25,13 @@ const char* util_readFile(char* filePath) {
 		fclose(fptr);
 		free(buffer);
 
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("ERROR: fread FAILED\n")
 #endif
 	}
 
 	if (fptr == NULL) {
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("ERROR: Loading file at %s FAILED\n", filePath);
 #endif
 	} else {
