@@ -28,3 +28,9 @@ linux:
 
 linuxdebug:
 	gcc -Wall -Wextra -O0 -o main.out $(COMPILE_FILES) -Ilib/ -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lrt -lm -lpthread && ./main.out
+
+windows:
+	gcc -Wall -O3 -o ConstellationEngine.exe -D_DEBUG=1 $(COMPILE_FILES) -Ilib/ -l../thirdparty/glfw-3.3.6.bin.WIN32/include/ -l../thirdparty/cglm-0.8.5/include/ && ./main.exe
+
+windowsdebug:
+	gcc -Wall -Wextra -O0 -o ConstellationEngine-debug.exe -D_DEBUG=1 $(COMPILE_FILES) -Ilib/ -l../thirdparty/glfw-3.3.6.bin.WIN32/include/ -l../thirdparty/cglm-0.8.5/include/ && ./main.exe
