@@ -72,9 +72,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->vertexShader, 512, NULL, infoLog);
-#ifdef DEBUG
 		printf("ERROR: Compilation of vertex shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
-#endif
 	}
 
 	// Fragment shader
@@ -83,15 +81,14 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 	graphicsObj->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	glShaderSource(graphicsObj->fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(graphicsObj->fragmentShader);
 
 	// Check for shader compilation errors
 	glGetShaderiv(graphicsObj->fragmentShader, GL_COMPILE_STATUS, &success);
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->fragmentShader, 512, NULL, infoLog);
-#ifdef DEBUG
 		printf("ERROR: Compilation of fragment shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
-#endif
 	}
 
 	// Link shaders
@@ -107,9 +104,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetProgramInfoLog(graphicsWorld->shaderProgram, 512, NULL, infoLog);
-#ifdef DEBUG
 		printf("WARNING: Linking shaders to the shader program FAILED Full output:\n%s\n", infoLog);
-#endif
 	}
 
 	// Cleanup
