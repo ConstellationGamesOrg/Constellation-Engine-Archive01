@@ -18,7 +18,7 @@ int main() {
 	struct core_graphics_world graphicsWorld;
 	struct core_graphics_obj graphicsObj;
 
-	core_graphics_createObj(&graphicsObj, &graphicsWorld, vertices, "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
+	core_graphics_createObj(&graphicsObj, &graphicsWorld, vertices, 9 * sizeof(float), "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
 
 	while (!window.shouldClose) {
 		if (core_input_isPressed(&window, KEY_ESCAPE) == 1) {

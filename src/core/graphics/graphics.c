@@ -26,7 +26,7 @@ int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettin
 	return 0;
 }
 
-int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld, float vertices[], char* vertPath, char* fragPath) {
+int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld, float vertices[], int verticesSize, char* vertPath, char* fragPath) {
 	if (graphicsObj == NULL) {
 #ifdef DEBUG
 		printf("WARNING: No graphicsObj object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
@@ -121,18 +121,18 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 	glGenBuffers(1, &graphicsObj->VBO);
 
 	// Bind the VAO first then bind + set vertex buffers then configure vertex attribs
-	glBindVertexArray(graphicsObj->VAO);
+    glBindVertexArray(graphicsObj->VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, graphicsObj->VBO);
-	
-	// Copy the vertex data into the buffer's memory
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, graphicsObj->VBO);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+    // Copy the vertex data into the buffer's memory
+    glBufferData(GL_ARRAY_BUFFER, verticesSize, vertices, GL_STATIC_DRAW);
 
-	// Unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	return 0;
 }
