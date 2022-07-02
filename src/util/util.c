@@ -38,5 +38,7 @@ const char* util_readFile(char* filePath) {
 		fclose(fptr);
 	}
 
+	printf("%s\n", buffer);
+
 	return buffer;
 }

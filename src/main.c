@@ -1,25 +1,11 @@
 #include "main.h"
 
 int main() {
-	float vertices[] = {
-		// X     Y     Z      R     G     B       X     Y
-		 0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Top right
-		 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Bottom left
-		-0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Top left
-	};
-
-	unsigned int indices[] = {
-		0, 1, 3,   // Triangle 1
-		1, 2, 3    // Triangle 2
-	};
-
-	float texCoords[] = {
-		0.0f, 0.0f,  // Bottom left corner
-		1.0f, 0.0f,  // Bottom right corner
-		0.0f, 1.0f,  // Top left corner
-		1.0f, 1.0f,  // Top right corner
-	};
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, // left
+         0.5f, -0.5f, 0.0f, // right
+         0.0f,  0.5f, 0.0f  // top
+    };
 
 	core_graphics_graphicsSettings(NULL);
 
@@ -29,10 +15,10 @@ int main() {
 
 	core_window_windowInit(&window, 800, 600, "Constellation Engine Window", clearColor);
 
-	struct core_graphics_shader shaderObj;
+	struct core_graphics_world graphicsWorld;
 	struct core_graphics_obj graphicsObj;
 
-	core_graphics_createObj(&graphicsObj, &shaderObj, vertices, sizeof(vertices), indices, sizeof(indices), "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
+	core_graphics_createObj(&graphicsObj, &graphicsWorld, vertices, 9 * sizeof(float), "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
 
 	while (!window.shouldClose) {
 		if (core_input_isPressed(&window, KEY_ESCAPE) == 1) {
@@ -57,7 +43,7 @@ int main() {
 
 		core_window_clear(&window);
 
-		core_graphics_render(&graphicsObj, &shaderObj);
+		core_graphics_render(&graphicsObj, &graphicsWorld);
 
 		core_window_update(&window);
 	}
