@@ -12,7 +12,7 @@ mac:
 	gcc -Wall -O3 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm $(COMPILE_FILES) -o main.out && ./main.out
 
 macdebug:
-	gcc -Wall -Wextra -O0 -D_DEBUG=1 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm $(COMPILE_FILES) -o main.out && ./main.out
+	gcc -Wall -Wextra -O0 -Ilib/ $(MAC_PARAMS) -lglfw -lcglm -D_DEBUG=1 $(COMPILE_FILES) -o main.out && ./main.out
 
 archx11deps:
 	sudo pacman -S glfw-x11 && git clone https://github.com/recp/cglm && cd cglm && mkdir build && cd build && cmake .. && make && sudo make install
