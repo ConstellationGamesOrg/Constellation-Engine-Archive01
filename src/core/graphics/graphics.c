@@ -28,28 +28,28 @@ int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettin
 
 int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj, float vertices[], int verticesSize, unsigned int indices[], int indicesSize, char* vertPath, char* fragPath) {
 	if (graphicsObj == NULL) {
-#ifdef _DEBUG
+#ifdef __DEBUG
 		printf("WARNING: No graphicsObj object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
 #endif
 		return -1;
 	}
 
-	if (graphicsObj == NULL) {
-#ifdef _DEBUG
-		printf("WARNING: No graphicsObj object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
+	if (graphicsWorld == NULL) {
+#ifdef __DEBUG
+		printf("WARNING: No graphicsworld object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
 #endif
 		return -1;
 	}
 
 	if (vertPath == NULL) {
-#ifdef _DEBUG
+#ifdef __DEBUG
 		printf("WARNING: No vertPath was passed to core_graphics_createObj. Shader loading and compilation will fail.\n");
 #endif
 		return -1;
 	}
 
 	if (fragPath == NULL) {
-#ifdef _DEBUG
+#ifdef __DEBUG
 		printf("WARNING: No fragPath was passed to core_graphics_createObj. Shader loading and compilation will fail.\n");
 #endif
 		return -1;
@@ -124,23 +124,29 @@ void core_graphics_shader_create(struct core_graphics_shader* shaderObj, char* v
 
 	if (!success) {
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		glGetShaderInfoLog(graphicsObj->vertexShader, 512, NULL, infoLog);
+#ifdef __DEBUG
 		printf("ERROR: Compilation of vertex shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
+#endif
 	}
 
 	// Fragment shader
 	const char* fragmentShaderSource = util_readFile(fragPath);
 
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
+  
+	glShaderSource(graphicsObj->fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(graphicsObj->fragmentShader);
 
 	// Check for shader compilation errors
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 
 	if (!success) {
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		glGetShaderInfoLog(graphicsObj->fragmentShader, 512, NULL, infoLog);
+#ifdef __DEBUG
 		printf("ERROR: Compilation of fragment shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
+#endif
 	}
 
 	// Link shaders
@@ -156,7 +162,10 @@ void core_graphics_shader_create(struct core_graphics_shader* shaderObj, char* v
 
 	if (!success) {
 		glGetProgramInfoLog(shaderObj->ID, 512, NULL, infoLog);
+		glGetProgramInfoLog(graphicsWorld->shaderProgram, 512, NULL, infoLog);
+#ifdef __DEBUG
 		printf("WARNING: Linking shaders to the shader program FAILED Full output:\n%s\n", infoLog);
+#endif
 	}
 
 	// Cleanup

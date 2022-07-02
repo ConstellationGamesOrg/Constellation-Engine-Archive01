@@ -2,7 +2,7 @@
 
 int core_window_windowInit(struct core_window_Window* window, int width, int height, char* title, vec4 clearColor) {
 	if (window == NULL) {
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("WARNING: No core_window_Window object was given to core_window_windowInit. You will not be able to use this window object in the future (you will need to).\n");
 #endif
 	}
