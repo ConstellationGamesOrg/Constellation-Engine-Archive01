@@ -26,13 +26,13 @@ int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettin
 	return 0;
 }
 
-int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld, float vertices[], int verticesSize, char* vertPath, char* fragPath) {
+int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj, float vertices[], int verticesSize, char* vertPath, char* fragPath) {
 	if (graphicsObj == NULL) {
 		printf("WARNING: No graphicsObj object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
 		return -1;
 	}
 
-	if (graphicsWorld == NULL) {
+	if (shaderObj == NULL) {
 		printf("WARNING: No graphicsworld object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
 		return -1;
 	}
@@ -49,61 +49,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	// Build and compile shaderProgram
 
-	// Vertex Shader
-	const char* vertexShaderSource = util_readFile(vertPath);
-
-	graphicsObj->vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(graphicsObj->vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(graphicsObj->vertexShader);
-
-	// Check for shader compilation errors
-	int success;
-	char infoLog[512];
-
-	glGetShaderiv(graphicsObj->vertexShader, GL_COMPILE_STATUS, &success);
-
-	if (!success) {
-		glGetShaderInfoLog(graphicsObj->vertexShader, 512, NULL, infoLog);
-
-		printf("ERROR: Compilation of vertex shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
-	}
-
-	// Fragment shader
-	const char* fragmentShaderSource = util_readFile(fragPath);
-
-	graphicsObj->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	glShaderSource(graphicsObj->fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(graphicsObj->fragmentShader);
-
-	// Check for shader compilation errors
-	glGetShaderiv(graphicsObj->fragmentShader, GL_COMPILE_STATUS, &success);
-
-	if (!success) {
-		glGetShaderInfoLog(graphicsObj->fragmentShader, 512, NULL, infoLog);
-
-		printf("ERROR: Compilation of fragment shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
-	}
-
-	// Link shaders
-	graphicsWorld->shaderProgram = glCreateProgram();
-
-	glAttachShader(graphicsWorld->shaderProgram, graphicsObj->vertexShader);
-	glAttachShader(graphicsWorld->shaderProgram, graphicsObj->fragmentShader);
-
-	glLinkProgram(graphicsWorld->shaderProgram);
-
-	// Check for linking errors
-	glGetProgramiv(graphicsWorld->shaderProgram, GL_LINK_STATUS, &success);
-
-	if (!success) {
-		glGetProgramInfoLog(graphicsWorld->shaderProgram, 512, NULL, infoLog);
-		printf("WARNING: Linking shaders to the shader program FAILED Full output:\n%s\n", infoLog);
-	}
-
-	// Cleanup
-	glDeleteShader(graphicsObj->vertexShader);
-	glDeleteShader(graphicsObj->fragmentShader);
+	core_graphics_shader_create(shaderObj, vertPath, fragPath);
 
 	// Generate IDs for the buffers
 	glGenVertexArrays(1, &graphicsObj->VAO);
@@ -128,18 +74,92 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 	return 0;
 }
 
-int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld) {
-	glUseProgram(graphicsWorld->shaderProgram);
+int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj) {
+	core_graphics_shader_use(shaderObj);
 	glBindVertexArray(graphicsObj->VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 9);
 
 	return 0;
 }
 
-int core_graphics_cleanup(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld) {
+int core_graphics_cleanup(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj) {
 	glDeleteVertexArrays(1, &graphicsObj->VAO);
 	glDeleteBuffers(1, &graphicsObj->VBO);
-	glDeleteProgram(graphicsWorld->shaderProgram);
+	glDeleteProgram(shaderObj->ID);
 
 	return 0;
+}
+
+void core_graphics_shader_create(struct core_graphics_shader* shaderObj, char* vertPath, char* fragPath) {
+	// Vertex Shader
+	unsigned int vertexShader;
+	const char* vertexShaderSource = util_readFile(vertPath);
+
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShader);
+
+	// Check for shader compilation errors
+	int success;
+	char infoLog[512];
+
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+
+	if (!success) {
+		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+
+		printf("ERROR: Compilation of vertex shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
+	}
+
+	// Fragment shader
+	unsigned int fragmentShader;
+	const char* fragmentShaderSource = util_readFile(fragPath);
+
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
+
+	// Check for shader compilation errors
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+
+	if (!success) {
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+
+		printf("ERROR: Compilation of fragment shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
+	}
+
+	// Link shaders
+	shaderObj->ID = glCreateProgram();
+
+	glAttachShader(shaderObj->ID, vertexShader);
+	glAttachShader(shaderObj->ID, fragmentShader);
+
+	glLinkProgram(shaderObj->ID);
+
+	// Check for linking errors
+	glGetProgramiv(shaderObj->ID, GL_LINK_STATUS, &success);
+
+	if (!success) {
+		glGetProgramInfoLog(shaderObj->ID, 512, NULL, infoLog);
+		printf("WARNING: Linking shaders to the shader program FAILED Full output:\n%s\n", infoLog);
+	}
+
+	// Cleanup
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+}
+
+void core_graphics_shader_use(struct core_graphics_shader* shaderObj) {
+	glUseProgram(shaderObj->ID);
+}
+
+void core_graphics_shader_setBool(struct core_graphics_shader* shaderObj, const char* name, bool value) {
+	glUniform1i(glGetUniformLocation(shaderObj->ID, name), (int)value);
+}
+void core_graphics_shader_setInt(struct core_graphics_shader* shaderObj, const char* name, int value) {
+	glUniform1i(glGetUniformLocation(shaderObj->ID, name), value);
+}
+void core_graphics_shader_setFloat(struct core_graphics_shader* shaderObj, const char* name, float value) {
+	glUniform1f(glGetUniformLocation(shaderObj->ID, name), value);
 }
