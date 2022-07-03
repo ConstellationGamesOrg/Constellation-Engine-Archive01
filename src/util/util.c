@@ -38,7 +38,9 @@ const char* util_readFile(char* filePath) {
 		fclose(fptr);
 	}
 
-	printf("%s\n", buffer);
-
 	return buffer;
+}
+
+int util_time_getTime() {
+	return glfwGetTime();
 }

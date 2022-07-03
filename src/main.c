@@ -1,12 +1,12 @@
 #include "main.h"
 
 int main() {
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left
-         0.5f, -0.5f, 0.0f, // right
-         0.0f,  0.5f, 0.0f  // top
-    };
-
+	float vertices[] = {
+	//    X      Y     Z      R     G     B
+		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
+	};
 	core_graphics_graphicsSettings(NULL);
 
 	struct core_window_Window window;
@@ -26,19 +26,31 @@ int main() {
 		}
 
 		if (core_input_isPressed(&window, KEY_RIGHT) == 1) {
-			window.clearColor[1] += 0.01f;
-		}
-		
-		if (core_input_isPressed(&window, KEY_LEFT) == 1) {
-			window.clearColor[1] -= 0.01f;
+			if (window.clearColor[1] < 1.0f) {
+				window.clearColor[1] += 0.01f;
+			} else {
+				window.clearColor[1] = 1.0f;
+			}
+		} if (core_input_isPressed(&window, KEY_LEFT) == 1) {
+			if (window.clearColor[1] > 0.0f) {
+				window.clearColor[1] -= 0.01f;
+			} else {
+				window.clearColor[1] = 0.0f;
+			}
 		}
 
 		if (core_input_isPressed(&window, KEY_UP) == 1) {
-			window.clearColor[0] += 0.01f;
-		}
-		
-		if (core_input_isPressed(&window, KEY_DOWN) == 1) {
-			window.clearColor[0] -= 0.01f;
+			if (window.clearColor[0] < 1.0f) {
+				window.clearColor[0] += 0.01f;
+			} else {
+				window.clearColor[0] = 1.0f;
+			}
+		} if (core_input_isPressed(&window, KEY_DOWN) == 1) {
+			if (window.clearColor[0] > 0.0f) {
+				window.clearColor[0] -= 0.01f;
+			} else {
+				window.clearColor[0] = 0.0f;
+			}
 		}
 
 		core_window_clear(&window);
@@ -48,6 +60,8 @@ int main() {
 		core_window_update(&window);
 	}
 
+	core_graphics_cleanup(&graphicsObj, &graphicsWorld);
 	core_window_cleanup();
+
 	return 0;
 }

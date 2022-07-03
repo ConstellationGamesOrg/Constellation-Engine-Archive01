@@ -14,7 +14,7 @@ int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettin
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, graphicsSettings->verMajor);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, graphicsSettings->verMinor);
 	} else {
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	}
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -28,30 +28,22 @@ int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettin
 
 int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_world* graphicsWorld, float vertices[], int verticesSize, char* vertPath, char* fragPath) {
 	if (graphicsObj == NULL) {
-#ifdef __DEBUG
 		printf("WARNING: No graphicsObj object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
-#endif
 		return -1;
 	}
 
 	if (graphicsWorld == NULL) {
-#ifdef __DEBUG
 		printf("WARNING: No graphicsworld object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
-#endif
 		return -1;
 	}
 
 	if (vertPath == NULL) {
-#ifdef __DEBUG
 		printf("WARNING: No vertPath was passed to core_graphics_createObj. Shader loading and compilation will fail.\n");
-#endif
 		return -1;
 	}
 
 	if (fragPath == NULL) {
-#ifdef __DEBUG
 		printf("WARNING: No fragPath was passed to core_graphics_createObj. Shader loading and compilation will fail.\n");
-#endif
 		return -1;
 	}
 
@@ -72,9 +64,8 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->vertexShader, 512, NULL, infoLog);
-#ifdef _DEBUG
+
 		printf("ERROR: Compilation of vertex shader at %s FAILED Full output:\n%s\n", vertPath, infoLog);
-#endif
 	}
 
 	// Fragment shader
@@ -90,9 +81,8 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetShaderInfoLog(graphicsObj->fragmentShader, 512, NULL, infoLog);
-#ifdef _DEBUG
+
 		printf("ERROR: Compilation of fragment shader at %s FAILED Full output:\n%s\n", fragPath, infoLog);
-#endif
 	}
 
 	// Link shaders
@@ -108,9 +98,7 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 	if (!success) {
 		glGetProgramInfoLog(graphicsWorld->shaderProgram, 512, NULL, infoLog);
-#ifdef _DEBUG
 		printf("WARNING: Linking shaders to the shader program FAILED Full output:\n%s\n", infoLog);
-#endif
 	}
 
 	// Cleanup
@@ -129,11 +117,13 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
     // Copy the vertex data into the buffer's memory
     glBufferData(GL_ARRAY_BUFFER, verticesSize, vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+	// Position attrib
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 
-    // Unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+	// Colour attrib
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	return 0;
 }

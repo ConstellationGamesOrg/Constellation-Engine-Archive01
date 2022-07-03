@@ -41,15 +41,13 @@ int core_window_windowInit(struct core_window_Window* window, int width, int hei
 
 	glfwMakeContextCurrent(window->window);
 
+	glfwSetFramebufferSizeCallback(window->window, core_window_framebufferSizeCallback);
+
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		printf("ERROR: GLAD initialization FAILED!\n");
 
 		return -1;
 	}
-
-	glViewport(0, 0, window->width, window->height);
-
-	glfwSetFramebufferSizeCallback(window->window, core_window_framebufferSizeCallback);
 
 	return 0;
 }
