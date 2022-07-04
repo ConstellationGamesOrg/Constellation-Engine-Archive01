@@ -15,10 +15,10 @@ int main() {
 
 	core_window_windowInit(&window, 800, 600, "Constellation Engine Window", clearColor);
 
-	struct core_graphics_world graphicsWorld;
+	struct core_graphics_shader shaderObj;
 	struct core_graphics_obj graphicsObj;
 
-	core_graphics_createObj(&graphicsObj, &graphicsWorld, vertices, 9 * sizeof(float), "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
+	core_graphics_createObj(&graphicsObj, &shaderObj, vertices, 18 * sizeof(float), "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
 
 	while (!window.shouldClose) {
 		if (core_input_isPressed(&window, KEY_ESCAPE) == 1) {
@@ -55,12 +55,12 @@ int main() {
 
 		core_window_clear(&window);
 
-		core_graphics_render(&graphicsObj, &graphicsWorld);
+		core_graphics_render(&graphicsObj, &shaderObj);
 
 		core_window_update(&window);
 	}
 
-	core_graphics_cleanup(&graphicsObj, &graphicsWorld);
+	core_graphics_cleanup(&graphicsObj, &shaderObj);
 	core_window_cleanup();
 
 	return 0;
