@@ -1,0 +1,23 @@
+Graphics pipeline - 3D to 2D coordinates and colouring
+
+STEPS:
+1. The vertex shader - Takes input a single vertex and transforms 3D coordinates into different 3D coordinates & allows doing some basic processing on vertex attributes - You make this
+2. Primitive assembly - Takes input all the vertices or vertex from teh vertex shader what form a primitive and assembles all the point(s) (draws lines from vertex to vertex) - OpenGL does this
+3. The geometry shader - Takes as input a collection of vertices than form a primitive (from the primitive assembly) and has the ability to generate other shapes by adding new vertices to form other primitives (or new primitives) - You *can* make this, however you usually don't
+4. Rasterization - Takes as input the output of the geometry shader and OpenGL maps the primitives to the corresponding pixels on the screen resulting in fragments for the fragment shader to use, then clipping is performed (all fragments outside your view are deleted) - OpenGL does this
+5. Fragment shader - Calculate the final colour of pixels and apply effects (lights, shadows, colour of light, etc, etc.) - You make this
+6. Alpha test and blending - Checks depth and stencil values of fragments and with those checks if the fragment is in front or behind other objects and should be deleted. Alpha values are also checked and objects are blended. - OpenGL does this
+
+NOTE:
+1. OpenGL doesn't transform ALL your 3D coords to 2D pixels; only 3D coords between -1.0 and 1.0 on the x, y and z axes. These are normalized device coordinates (NDC) and coordinates within this region will be visible.
+2. Ways for the graphics card to manage data:
+GL_STREAM DRAW:  Data is const and used by the GPU only a few times
+GL_STATIC_DRAW:  Data is const and used many times
+GL_DYNAMIC_DRAW: Data is variable and used many times
+3. glVertexAttribPointer params
+	1. Which vertex attribute to configure (eg. position)
+	2. The size of the vertex attribute (eg. if vec3, 3 values)
+	3. Type of data (eg. GL_FLOAT) - Remember vec*s in GLSL consist of floating point values
+	4. If data should be normalized
+	5. Stride - Space between vertex attributes (eg. if the next set of position data is located exactly 3 times the size of a float away you specify that value as the stride) If arrays are tightly packed you can set the stride to 0 and OpenGL will determine the stride.
+	6. Offset of where position data begins in the buffer (eg. If position data is at the start of the array you can simply set it as 0)
