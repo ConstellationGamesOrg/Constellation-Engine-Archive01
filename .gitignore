@@ -62,7 +62,7 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 /.vs
-/Win32/Debug
-ConstellationEngine.exe
-ConstellationEngine.pdb
+/bin
+*.exe
+*.pdb
 ConstellationEngine.vcxproj.user
