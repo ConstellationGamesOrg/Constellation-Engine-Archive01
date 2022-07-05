@@ -114,28 +114,38 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
     return 0;
 }
 
-int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj) {
+int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj, float* cubePositions[]) {
 	core_graphics_shader_use(shaderObj);
 
-	glm_mat4_identity(graphicsObj->model);
 	glm_mat4_identity(graphicsObj->view);
 	glm_mat4_identity(graphicsObj->projection);
-
-	glm_rotate(graphicsObj->model, (float)glfwGetTime() * glm_rad(50.0f), (vec3){0.5f, 1.0f, 0.0f});
 
 	// Translating the scene in the reverse direction of where the user wants to move
 	glm_translate(graphicsObj->view, (vec3){0.0f, 0.0f, -3.0f});
 	glm_perspective(glm_rad(45.0f), (float)800 / (float)600, 0.1f, 100.0f, graphicsObj->projection);
 
 	// Retrieve the matrix uniform locations and pass them to the shaders
-	GLint modelLoc = glGetUniformLocation(shaderObj->ID, "model");
 	GLint viewLoc = glGetUniformLocation(shaderObj->ID, "view");
 	GLint projectionLoc = glGetUniformLocation(shaderObj->ID, "projection");
 
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &graphicsObj->model[0][0]);
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &graphicsObj->view[0][0]);
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &graphicsObj->projection[0][0]);
 
+	glBindVertexArray(graphicsObj->VAO);
+	for (unsigned int i = 0; i < 10; i++)
+	{
+		glm_mat4_identity(graphicsObj->model);
+
+		glm_translate(graphicsObj->model, cubePositions[i]);
+		float angle = glfwGetTime() * 25.0f * i;
+		glm_rotate(graphicsObj->model, glm_rad(angle), (vec3) { 1.0f, 0.3f, 0.5f });
+
+		GLint modelLoc = glGetUniformLocation(shaderObj->ID, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &graphicsObj->model[0][0]);
+
+		glBindVertexArray(graphicsObj->VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
 	glBindVertexArray(graphicsObj->VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
