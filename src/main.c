@@ -18,7 +18,7 @@ int main() {
 
 	struct core_window_Window windowObj;
 
-	vec4 clearColor = {0.3f, 0.3f, 0.4f, 1.0f};
+	vec4 clearColor = {0.5f, 0.0f, 0.4f, 1.0f};
 
 	core_window_windowInit(&windowObj, 800, 600, "Constellation Engine Window", clearColor);
 
