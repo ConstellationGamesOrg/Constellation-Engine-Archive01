@@ -2,11 +2,11 @@
 
 int main() {
 	float vertices[] = {
-	//    X      Y     Z       R     G     B       X     Y
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Top left
+	//    X      Y     Z      X     Y
+		 0.5f,  0.5f, 0.0f,  1.0f, 1.0f,   // Top right
+		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom right
+		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom left
+		-0.5f,  0.5f, 0.0f,  0.0f, 1.0f    // Top left
 	};
 
 	unsigned int indices[] = {
@@ -25,7 +25,7 @@ int main() {
 	struct core_graphics_shader shaderObj;
 	struct core_graphics_obj graphicsObj;
 
-	core_graphics_createObj(&graphicsObj, &shaderObj, vertices, 32 * sizeof(float), indices, 6 * sizeof(unsigned int), "res/img/Pixel Logo.png", "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
+	core_graphics_createObj(&graphicsObj, &shaderObj, vertices, sizeof(vertices), indices, 6 * sizeof(unsigned int), "res/img/Pixel Logo.png", "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
 
 	while (!windowObj.shouldClose) {
 		if (core_input_isPressed(&windowObj, KEY_ESCAPE) == 1) {

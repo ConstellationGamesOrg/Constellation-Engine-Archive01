@@ -73,15 +73,17 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, graphicsObj->EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
 
-	// Position attrib
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	// Position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	// Colour attrib
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	// Colour attribute
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(1);
+
+	// Texture coord attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	// Texture coord attrib
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
 
 	glGenTextures(1, &graphicsObj->texture);
 	glBindTexture(GL_TEXTURE_2D, graphicsObj->texture);
@@ -118,6 +120,26 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
 int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj) {
 	core_graphics_shader_use(shaderObj);
+
+	glm_mat4_identity(graphicsObj->model);
+	glm_mat4_identity(graphicsObj->view);
+	glm_mat4_identity(graphicsObj->projection);
+
+	glm_rotate(graphicsObj->model, (float)glfwGetTime() * glm_rad(50.0f), (vec3){0.5f, 1.0f, 0.0f});
+
+	// Translating the scene in the reverse direction of where the user wants to move
+	glm_translate(graphicsObj->view, (vec3){0.0f, 0.0f, -3.0f});
+	glm_perspective(glm_rad(45.0f), (float)800 / (float)600, 0.1f, 100.0f, graphicsObj->projection);
+
+	// Retrieve the matrix uniform locations and pass them to the shaders
+	GLint modelLoc = glGetUniformLocation(shaderObj->ID, "model");
+	GLint viewLoc = glGetUniformLocation(shaderObj->ID, "view");
+	GLint projectionLoc = glGetUniformLocation(shaderObj->ID, "projection");
+
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &graphicsObj->model[0][0]);
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &graphicsObj->view[0][0]);
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &graphicsObj->projection[0][0]);
+
 	glBindVertexArray(graphicsObj->VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
