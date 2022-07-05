@@ -8,6 +8,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <cglm/cglm.h>
+
 // Standard
 #include <stdio.h>
 #include <string.h>
@@ -23,6 +25,9 @@ struct core_graphics_obj {
 	unsigned int VAO;
 	unsigned int EBO;
 	unsigned int texture;
+	mat4 model;
+	mat4 view;
+	mat4 projection;
 };
 
 struct core_graphics_shader {
