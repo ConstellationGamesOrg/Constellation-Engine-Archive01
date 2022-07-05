@@ -29,7 +29,7 @@ int core_graphics_graphicsSettings(struct core_graphics_settings* graphicsSettin
 	return 0;
 }
 
-int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj, float vertices[], int verticesSize, unsigned int indices[], int indicesSize, char* texturePath, char* vertPath, char* fragPath) {
+int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_graphics_shader* shaderObj, float vertices[], int verticesSize, char* texturePath, char* vertPath, char* fragPath) {
 	if (graphicsObj == NULL) {
 		printf("WARNING: No graphicsObj object was passed to core_graphics_createObj. You will not be able to use this object in the future (you will need to)\n");
 		return -1;
@@ -68,10 +68,6 @@ int core_graphics_createObj(struct core_graphics_obj* graphicsObj, struct core_g
 
     // Copy the vertex data into the buffer's memory
     glBufferData(GL_ARRAY_BUFFER, verticesSize, vertices, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &graphicsObj->EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, graphicsObj->EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
 
 	// Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -141,7 +137,7 @@ int core_graphics_render(struct core_graphics_obj* graphicsObj, struct core_grap
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &graphicsObj->projection[0][0]);
 
 	glBindVertexArray(graphicsObj->VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	return 0;
 }

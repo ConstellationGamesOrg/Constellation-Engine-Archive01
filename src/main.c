@@ -2,16 +2,48 @@
 
 int main() {
 	float vertices[] = {
-	//    X      Y     Z      X     Y
-		 0.5f,  0.5f, 0.0f,  1.0f, 1.0f,   // Top right
-		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom left
-		-0.5f,  0.5f, 0.0f,  0.0f, 1.0f    // Top left
-	};
+	// X      Y      Z      X     Y
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-	unsigned int indices[] = {
-		0, 1, 3,   // Triangle 1
-		1, 2, 3    // Triangle 2
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
 	core_graphics_graphicsSettings(NULL);
@@ -25,7 +57,7 @@ int main() {
 	struct core_graphics_shader shaderObj;
 	struct core_graphics_obj graphicsObj;
 
-	core_graphics_createObj(&graphicsObj, &shaderObj, vertices, sizeof(vertices), indices, 6 * sizeof(unsigned int), "res/img/Pixel Logo.png", "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
+	core_graphics_createObj(&graphicsObj, &shaderObj, vertices, sizeof(vertices), "res/img/Pixel Logo.png", "res/shaders/triangle/triangle.vert", "res/shaders/triangle/triangle.frag");
 
 	while (!windowObj.shouldClose) {
 		if (core_input_isPressed(&windowObj, KEY_ESCAPE) == 1) {
