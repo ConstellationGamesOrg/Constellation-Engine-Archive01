@@ -48,12 +48,12 @@ int core_window_windowInit(struct core_window_Window* window, int width, int hei
 	}
 
 	glEnable(GL_DEPTH_TEST);
+	glfwSwapInterval(1);
 
 	return 0;
 }
 
 int core_window_clear(struct core_window_Window* window) {
-	glfwSwapInterval(1);
 	glClearColor(window->clearColor[0], window->clearColor[1], window->clearColor[2], window->clearColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
