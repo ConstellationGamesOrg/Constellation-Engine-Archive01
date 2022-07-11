@@ -29,10 +29,8 @@ If you get a message containing "Y/n :" type in Y and hit enter.
 #### Debian
 On Debian, if this is your first compile of Constellation Engine run ``make debiandeps`` to install dependencies and ``make linux`` to compile :)
 
-#### Arch (BTW)
+#### Arch
 On Arch, the installation process is different based off if you're using Wayland or X11. To find out which one you're on, run ``echo $WAYLAND_DISPLAY``. If it outputs nothing, you're on X11. If it outputs something like wayland-0 then you're on Wayland.
-
-If you get a message saying something similar to "Unsupported package - Potentially Dangerous !" don't worry. It's only saying that CGLM is an unsupported package, but nothing bad will happen to your system.
 
 ##### Wayland
 On Wayland, if this is your first compile of Constellation Engine run ``make archwaylanddeps`` to install dependencies and ``make linux`` to compile :)
@@ -44,7 +42,7 @@ On X11, if this is your first compile of Constellation Engine run ``make archx11
 Open the folder in which Constellation Engine is on your system in your terminal.
 
 #### With brew
-If you have brew installed, and this is your first compile of Constellation Engine, run ``brew install glfw cglm`` and ``make mac`` to compile. Enjoy :)
+If you have brew installed, and this is your first compile of Constellation Engine, run ``make mac`` to compile. Enjoy :)
 
 #### Without brew
 If this is your first compile of Constellation Engine and you don't have brew installed, run ``make macdeps`` to install dependencies and ``make mac`` to compile. Enjoy :)
