@@ -32,8 +32,6 @@ On Debian, if this is your first compile of Constellation Engine run ``make debi
 #### Arch (BTW)
 On Arch, the installation process is different based off if you're using Wayland or X11. To find out which one you're on, run ``echo $WAYLAND_DISPLAY``. If it outputs nothing, you're on X11. If it outputs something like wayland-0 then you're on Wayland.
 
-If you get a message saying something similar to "Unsupported package - Potentially Dangerous !" don't worry. It's only saying that CGLM is an unsupported package, but nothing bad will happen to your system.
-
 ##### Wayland
 On Wayland, if this is your first compile of Constellation Engine run ``make archwaylanddeps`` to install dependencies and ``make linux`` to compile :)
 
