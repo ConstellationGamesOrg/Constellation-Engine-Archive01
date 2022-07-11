@@ -1,105 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\main.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\graphics\graphics.c">
-      <Filter>src\core\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\input\input.c">
-      <Filter>src\core\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\window\window.c">
-      <Filter>src\core\window</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\util.c">
-      <Filter>src\util</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\glad\src\glad.c">
-      <Filter>lib\glad</Filter>
-    </ClCompile>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\core\window\window.cpp" />
+    <ClCompile Include="contrib\glad\src\glad.cpp" />
+    <ClCompile Include="src\utils\utils.cpp" />
+    <ClCompile Include="src\core\graphics\graphics.cpp" />
+    <ClCompile Include="src\utils\shader\shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\main.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\graphics\graphics.h">
-      <Filter>src\core\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\input\input.h">
-      <Filter>src\core\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\window\window.h">
-      <Filter>src\core\window</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\util.h">
-      <Filter>src\util</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="AUTHORS.md" />
+    <None Include="CHANGELOG.md" />
+    <None Include="LICENSE" />
     <None Include="README.md" />
-    <None Include="res\shaders\triangle\triangle.frag">
-      <Filter>res\shaders\triangle</Filter>
-    </None>
-    <None Include="res\shaders\triangle\triangle.vert">
-      <Filter>res\shaders\triangle</Filter>
-    </None>
-    <None Include="lib\glad\LICENSE">
-      <Filter>lib\glad</Filter>
-    </None>
-    <None Include="lib\glfw\LICENSE.md">
-      <Filter>lib\glfw</Filter>
-    </None>
-    <None Include="lib\stb\LICENSE">
-      <Filter>lib\stb</Filter>
-    </None>
+    <None Include="data\shaders\cube.vert" />
+    <None Include="data\shaders\cube.frag" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="LICENSE" />
-    <Text Include="src\core\graphics\notes.txt">
-      <Filter>src\core\graphics</Filter>
-    </Text>
+    <ClInclude Include="src\main.hpp" />
+    <ClInclude Include="src\core\window\window.hpp" />
+    <ClInclude Include="src\utils\utils.hpp" />
+    <ClInclude Include="src\core\graphics\graphics.hpp" />
+    <ClInclude Include="src\utils\shader\shader.hpp" />
+    <ClInclude Include="src\core\camera\camera.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{a3068dbb-ee96-49b3-b2bc-b55f1629adc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\core">
-      <UniqueIdentifier>{518d4476-2207-4c2f-b066-5ba3990bea86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\core\graphics">
-      <UniqueIdentifier>{c3afb822-1d8d-433e-9d7e-096109377f44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\core\input">
-      <UniqueIdentifier>{05ced9c9-50b4-40d0-adad-ce4e2772e4a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\core\window">
-      <UniqueIdentifier>{dd4f1720-a098-4abb-86f5-0dae8fbc7149}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util">
-      <UniqueIdentifier>{6b333489-f9df-48d6-870d-dd903d59d92e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="res">
-      <UniqueIdentifier>{aefab344-3bab-4df8-b9f4-c6e04a7767e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="res\shaders">
-      <UniqueIdentifier>{81bbe1d4-e176-4df5-9b7c-7789ec5c1a7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="res\shaders\triangle">
-      <UniqueIdentifier>{7c5ed069-4c43-44a7-854d-297023a4deb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib">
-      <UniqueIdentifier>{04576669-a002-4bca-835e-b293731c0a4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\glad">
-      <UniqueIdentifier>{37b295bf-5808-4ead-bdca-18bedee8e41b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\glfw">
-      <UniqueIdentifier>{5c0f3d36-962e-4599-b230-d52e8044efed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\stb">
-      <UniqueIdentifier>{9a4c1d7e-5b05-413f-bd31-a7ed655f5bbb}</UniqueIdentifier>
-    </Filter>
+    <Image Include="data\textures\PixelLogo.png" />
   </ItemGroup>
 </Project>

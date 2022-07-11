@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{cc0a24b0-03ba-4857-9f07-6075638d6e1b}</ProjectGuid>
+    <ProjectGuid>{b96c83dd-57d8-4be4-97ae-26b634e6fe35}</ProjectGuid>
     <RootNamespace>ConstellationEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -93,9 +93,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>lib;..\thirdparty\glfw-3.3.6.bin.WIN32\include;..\thirdparty\cglm-0.8.5\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>contrib;contrib\glad\include;..\thirdparty\glfw-3.3.6.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,9 +111,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>lib;..\thirdparty\glfw-3.3.6.bin.WIN32\include;..\thirdparty\cglm-0.8.5\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>contrib;contrib\glad\include;..\thirdparty\glfw-3.3.6.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,9 +129,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>lib;..\thirdparty\glfw-3.3.6.bin.WIN64\include;..\thirdparty\cglm-0.8.5\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>contrib;contrib\glad\include;..\thirdparty\glfw-3.3.6.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,9 +147,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>lib;..\thirdparty\glfw-3.3.6.bin.WIN64\include;..\thirdparty\cglm-0.8.5\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>contrib;contrib\glad\include;..\thirdparty\glfw-3.3.6.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,31 +162,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lib\glad\src\glad.c" />
-    <ClCompile Include="src\core\graphics\graphics.c" />
-    <ClCompile Include="src\core\input\input.c" />
-    <ClCompile Include="src\core\window\window.c" />
-    <ClCompile Include="src\main.c" />
-    <ClCompile Include="src\util\util.c" />
+    <ClCompile Include="contrib\glad\src\glad.cpp" />
+    <ClCompile Include="src\core\graphics\graphics.cpp" />
+    <ClCompile Include="src\utils\shader\shader.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\core\window\window.cpp" />
+    <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lib\glad\LICENSE" />
-    <None Include="lib\glfw\LICENSE.md" />
-    <None Include="lib\stb\LICENSE" />
+    <None Include="AUTHORS.md" />
+    <None Include="CHANGELOG.md" />
+    <None Include="data\shaders\cube.frag" />
+    <None Include="data\shaders\cube.vert" />
+    <None Include="LICENSE" />
     <None Include="README.md" />
-    <None Include="res\shaders\triangle\triangle.frag" />
-    <None Include="res\shaders\triangle\triangle.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="LICENSE" />
-    <Text Include="src\core\graphics\notes.txt" />
+    <ClInclude Include="src\core\camera\camera.hpp" />
+    <ClInclude Include="src\core\graphics\graphics.hpp" />
+    <ClInclude Include="src\utils\shader\shader.hpp" />
+    <ClInclude Include="src\main.hpp" />
+    <ClInclude Include="src\core\window\window.hpp" />
+    <ClInclude Include="src\utils\utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\graphics\graphics.h" />
-    <ClInclude Include="src\core\input\input.h" />
-    <ClInclude Include="src\core\window\window.h" />
-    <ClInclude Include="src\main.h" />
-    <ClInclude Include="src\util\util.h" />
+    <Image Include="data\textures\PixelLogo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
