@@ -1,6 +1,11 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+// User-Defined Headers
+// --------------------
+#include "../graphics/graphics.hpp"
+#include "../camera/camera.hpp"
+
 // 3rd Party Library Headers
 // -------------------------
 #include <glad/glad.hpp>
@@ -31,6 +36,7 @@ namespace CE {
 			glm::vec4 clearColor;
 
 			int create(int width, int height, std::string title);
+			int updateMatrices(CE::core::Shader* shader, CE::core::Camera* camera);
 			int update();
 			int clear();
 			int cleanup();

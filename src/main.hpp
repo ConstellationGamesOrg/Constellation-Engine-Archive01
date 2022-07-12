@@ -6,15 +6,12 @@
 #include "core/window/window.hpp"
 #include "core/graphics/graphics.hpp"
 #include "core/camera/camera.hpp"
-#include "utils/shader/shader.hpp"
+#include "core/input/input.hpp"
 
 // 3rd Party Library Headers
 // -------------------------
 #include <glad/glad.hpp>
 #include <GLFW/glfw3.h>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

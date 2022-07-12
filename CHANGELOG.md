@@ -2,9 +2,20 @@
 
 ## [Unreleased]
 
+-------------------------------------------------------------------------------------------------------------
+
+## [0.3.0]
+
 ### Added
 * Added camera module
 * Added deltatime
+* Added lots more functionality to the engine
+* Added texture class
+* Added cube instancing
+
+### Changed
+* Moved shader class to graphics.cpp
+* No need for a cleanup function (yet) all class object's deconstructors will do the cleanup
 
 -------------------------------------------------------------------------------------------------------------
 

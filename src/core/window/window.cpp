@@ -34,6 +34,20 @@ namespace CE {
 			return 0;
 		}
 
+		int Window::updateMatrices(CE::core::Shader* shader, CE::core::Camera* camera) {
+			// Projection matrix
+			glm::mat4 projection = glm::mat4(1.0f);
+			projection = glm::perspective(glm::radians(45.0f), static_cast<float>(width) / static_cast<float>(height), 0.1f, 100.0f);
+			shader->setMat4("projection", projection);
+
+			// View transformation
+			glm::mat4 view = glm::mat4(1.0f);
+			view = camera->GetViewMatrix();
+			shader->setMat4("view", view);
+
+			return 0;
+		}
+
 		int Window::update() {
 			glfwSwapBuffers(window);
 			glfwPollEvents();
