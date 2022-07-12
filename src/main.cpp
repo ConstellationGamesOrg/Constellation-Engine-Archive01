@@ -18,6 +18,9 @@ float lastX = window.width / 2.0f;
 float lastY = window.height / 2.0f;
 bool firstMouse = true;
 
+// Input
+CE::core::Input input;
+
 
 
 // Callback functions
@@ -30,25 +33,25 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 // Input callback. Process all input
 void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
 
-	if (glfwGetKey(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
 		glfwSetWindowShouldClose(window.window, true);            // If so, close the window
-	if (glfwGetKey(window.window, GLFW_KEY_Q) == GLFW_PRESS) // Check if the Q key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS) // Check if the Q key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);    // If so, change draw mode to GL_FILL
-	if (glfwGetKey(window.window, GLFW_KEY_E) == GLFW_PRESS) // Check if the E key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS) // Check if the E key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);    // If so, change draw mode to GL_LINE / wireframe
 
 
-	if (glfwGetKey(window.window, GLFW_KEY_W) == GLFW_PRESS)
+	if (input.getKeyPress(window.window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::FORWARD, deltaTime);
-	if (glfwGetKey(window.window, GLFW_KEY_S) == GLFW_PRESS)
+	if (input.getKeyPress(window.window, GLFW_KEY_S) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::BACKWARD, deltaTime);
-	if (glfwGetKey(window.window, GLFW_KEY_A) == GLFW_PRESS)
+	if (input.getKeyPress(window.window, GLFW_KEY_A) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::LEFT, deltaTime);
-	if (glfwGetKey(window.window, GLFW_KEY_D) == GLFW_PRESS)
+	if (input.getKeyPress(window.window, GLFW_KEY_D) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::RIGHT, deltaTime);
-	if (glfwGetKey(window.window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	if (input.getKeyPress(window.window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::UP, deltaTime);
-	if (glfwGetKey(window.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	if (input.getKeyPress(window.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::DOWN, deltaTime);
 }
 
@@ -97,7 +100,7 @@ int main() {
 
 	// Build and compile our shader program
 	// ------------------------------------
-	CE::utils::Shader cubeShader("data/shaders/cube.vert", "data/shaders/cube.frag");
+	CE::core::Shader cubeShader("data/shaders/cube.vert", "data/shaders/cube.frag");
 	
 	// Setup vertex data
 	std::vector<float> vertices = {
@@ -144,89 +147,27 @@ int main() {
 		-0.5f,  0.5f,  0.5f,   0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f
 	};
-	std::vector<glm::vec3> cubePositions = {
-	glm::vec3( 0.0f,  0.0f,   0.0f),
-	glm::vec3( 2.0f,  5.0f, -15.0f),
-	glm::vec3(-1.5f, -2.2f,  -2.5f),
-	glm::vec3(-3.8f, -2.0f, -12.3f),
-	glm::vec3( 2.4f, -0.4f,  -3.5f),
-	glm::vec3(-1.7f,  3.0f,  -7.5f),
-	glm::vec3( 1.3f, -2.0f,  -2.5f),
-	glm::vec3( 1.5f,  2.0f,  -2.5f),
-	glm::vec3( 1.5f,  0.2f,  -1.5f),
-	glm::vec3(-1.3f,  1.0f,  -1.5f)
-	};
 
 
 
-	// Setup VAO and VBO // TODO: Move this to some graphics create object function
-	// -----------------
-	// Vertex Buffer Object // Vertex Array Object
-	unsigned int VBO, cubeVAO;
-	glGenBuffers(1, &VBO);
-	glGenVertexArrays(1, &cubeVAO);
-
-	// VBO
-	// Copy our vertices array in a buffer for OpenGL to use
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * 3 * sizeof(float), &vertices.front(), GL_STATIC_DRAW); // https://stackoverflow.com/questions/7173494/vbos-with-stdvector
-	// GL_STATIC_DRAW: Data will be modified once and used many times
-	// GL_DYNAMIC_DRAW: Data will be modified repeatedly and used many times
-	// GL_STREAM_DRAW: Data will be modified once and used at most a few times
-
-
-	// cubeVAO
-	// Bind the Vertex Array Object first, then set vertex buffer(s), and then configure vertex attributes(s)
-	glBindVertexArray(cubeVAO);
-
-	// Then set our vertex attributes pointers
-	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // Please note that we put 5 * sizeof(float) here because we have 3 floats for position and 2 floats for texture
-	glEnableVertexAttribArray(0);
-	// Texture attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
-	glBindVertexArray(0);
+	// Create a cube
+	CE::core::Object cube1(vertices, false, true);
+	CE::core::Object cube2(vertices, false, true);
+	CE::core::Object cube3(vertices, false, true);
+	CE::core::Object cube4(vertices, false, true);
+	CE::core::Object cube5(vertices, false, true);
+	CE::core::Object cube6(vertices, false, true);
+	CE::core::Object cube7(vertices, false, true);
+	CE::core::Object cube8(vertices, false, true);
+	CE::core::Object cube9(vertices, false, true);
+	CE::core::Object cube10(vertices, false, true);
 
 
 
-	// Load and create a texture // TODO: Move this to a texture module in utils/
+	// Load and create a texture
 	// -------------------------
-	unsigned int texture1;
-
-	// texture1
-	glGenTextures(1, &texture1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// Set the texture filtering parameters (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Load image, create texture and generate mipmaps
-	int width, height, nrComponents;
-	stbi_set_flip_vertically_on_load(true); // Tell stb_image.h to flip loaded texture's on the y-axis. The standard OpenGL texture coordinate system is upside down. (Because texture coordinates go from 0 to 1 and not 0 to -1)
-	unsigned char* data = stbi_load("data/textures/PixelLogo.png", &width, &height, &nrComponents, 0);  // logo.png has transparency, so make sure to tell OpenGL the data type is of GL_RGBA (4 channels)
-	if (data) {
-		GLenum format = GL_RGBA; // Assume GL_RGBA (images with alpha channel) because they are the most commonly used by me (also removes compiler warnings)
-		if (nrComponents == 1)
-			format = GL_RED;
-		else if (nrComponents == 3)
-			format = GL_RGB;
-		else if (nrComponents == 4)
-			format = GL_RGBA;
-
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	stbi_image_free(data);
+	CE::core::Texture texture1;
+	texture1.loadTexture("data/textures/PixelLogo.png");
 
 
 
@@ -254,14 +195,15 @@ int main() {
 		// -----
 		processInput(window, &camera, deltaTime);
 
-		if (glfwGetKey(window.window, GLFW_KEY_RIGHT)) {
+		// TODO: Move this to process input
+		if (input.getKeyPress(window.window, GLFW_KEY_RIGHT)) {
 			if (window.clearColor[1] < 1.0f) {
 				window.clearColor[1] += 0.01f;
 			}
 			else {
 				window.clearColor[1] = 1.0f;
 			}
-		} if (glfwGetKey(window.window, GLFW_KEY_LEFT)) {
+		} if (input.getKeyPress(window.window, GLFW_KEY_LEFT)) {
 			if (window.clearColor[1] > 0.0f) {
 				window.clearColor[1] -= 0.01f;
 			}
@@ -270,14 +212,14 @@ int main() {
 			}
 		}
 
-		if (glfwGetKey(window.window, GLFW_KEY_UP)) {
+		if (input.getKeyPress(window.window, GLFW_KEY_UP)) {
 			if (window.clearColor[0] < 1.0f) {
 				window.clearColor[0] += 0.01f;
 			}
 			else {
 				window.clearColor[0] = 1.0f;
 			}
-		} if (glfwGetKey(window.window, GLFW_KEY_DOWN)) {
+		} if (input.getKeyPress(window.window, GLFW_KEY_DOWN)) {
 			if (window.clearColor[0] > 0.0f) {
 				window.clearColor[0] -= 0.01f;
 			}
@@ -298,46 +240,72 @@ int main() {
 		// Activate shader
 		cubeShader.use();
 
-		// Projection matrix
-		glm::mat4 projection = glm::mat4(1.0f);
-		projection = glm::perspective(glm::radians(45.0f), static_cast<float>(window.width) / static_cast<float>(window.height), 0.1f, 100.0f);
-		cubeShader.setMat4("projection", projection);
-
-		// View transformation
-		glm::mat4 view = glm::mat4(1.0f);
-		view = camera.GetViewMatrix();
-		cubeShader.setMat4("view", view);
+		// Update projection and view matrix
+		window.updateMatrices(&cubeShader, &camera);
 
 		// Bind texture1
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture1);
+		glBindTexture(GL_TEXTURE_2D, texture1.textureID);
 
 		// Bind the cubeVAO
-		glBindVertexArray(cubeVAO);
+		glBindVertexArray(cube1.VAO);
 
 		// Render cubes
-		for (unsigned int i = 0; i < cubePositions.size(); i++)
-		{
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * i;
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			cubeShader.setMat4("model", model);
+		cube1.translate({ 0.0f, 0.0f, 0.0f });
+		cube1.rotate(20.0f * 0, { 1.0f, 0.3f, 0.5f });
+		cube1.set(&cubeShader);
+		cube1.draw();
+		
+		cube2.translate({ 2.0f,  5.0f, -15.0f });
+		cube2.rotate(20.0f * 1, { 1.0f, 0.3f, 0.5f });
+		cube2.set(&cubeShader);
+		cube2.draw();
+		
+		cube3.translate({ -1.5f, -2.2f,  -2.5f });
+		cube3.rotate(20.0f * 2, { 1.0f, 0.3f, 0.5f });
+		cube3.set(&cubeShader);
+		cube3.draw();
+		
+		cube4.translate({ -3.8f, -2.0f, -12.3f });
+		cube4.rotate(20.0f * 3, { 1.0f, 0.3f, 0.5f });
+		cube4.set(&cubeShader);
+		cube4.draw();
+		
+		cube5.translate({ 2.4f, -0.4f,  -3.5f });
+		cube5.rotate(20.0f * 4, { 1.0f, 0.3f, 0.5f });
+		cube5.set(&cubeShader);
+		cube5.draw();
 
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
+		cube6.translate({ -1.7f, 3.0f, -7.5f });
+		cube6.rotate(20.0f * 5, { 1.0f, 0.3f, 0.5f });
+		cube6.set(&cubeShader);
+		cube6.draw();
+		
+		cube7.translate({ 1.3f, -2.0f, -2.5f });
+		cube7.rotate(20.0f * 6, { 1.0f, 0.3f, 0.5f });
+		cube7.set(&cubeShader);
+		cube7.draw();
+		
+		cube8.translate({ 1.5f, 2.0f, -2.5f });
+		cube8.rotate(20.0f * 7, { 1.0f, 0.3f, 0.5f });
+		cube8.set(&cubeShader);
+		cube8.draw();
+		
+		cube9.translate({ 1.5f, 0.2f, -1.5f });
+		cube9.rotate(20.0f * 8, { 1.0f, 0.3f, 0.5f });
+		cube9.set(&cubeShader);
+		cube9.draw();
+		
+		cube10.translate({ -1.3f, 1.0f, -1.5f });
+		cube10.rotate(20.0f * 9, { 1.0f, 0.3f, 0.5f });
+		cube10.set(&cubeShader);
+		cube10.draw();
 
 		// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
 		glBindVertexArray(0);
 
 		window.update();
 	}
-
-	// Clean up // TODO: Move clean up to graphics cleanup
-	// --------
-	glDeleteVertexArrays(1, &cubeVAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(cubeShader.ID);
 
 	window.cleanup();
 	return 0;

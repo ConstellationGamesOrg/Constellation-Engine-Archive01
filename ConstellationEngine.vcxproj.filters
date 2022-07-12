@@ -6,7 +6,7 @@
     <ClCompile Include="contrib\glad\src\glad.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
     <ClCompile Include="src\core\graphics\graphics.cpp" />
-    <ClCompile Include="src\utils\shader\shader.cpp" />
+    <ClCompile Include="src\core\input\input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AUTHORS.md" />
@@ -21,8 +21,8 @@
     <ClInclude Include="src\core\window\window.hpp" />
     <ClInclude Include="src\utils\utils.hpp" />
     <ClInclude Include="src\core\graphics\graphics.hpp" />
-    <ClInclude Include="src\utils\shader\shader.hpp" />
     <ClInclude Include="src\core\camera\camera.hpp" />
+    <ClInclude Include="src\core\input\input.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\textures\PixelLogo.png" />
