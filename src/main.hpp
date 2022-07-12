@@ -1,3 +1,5 @@
+// Copyright (c) 2022 ConstellationEngine Developers (see [AUTHORS.md](AUTHORS.md))
+
 #ifndef MAIN_HPP
 #define MAIN_HPP
 

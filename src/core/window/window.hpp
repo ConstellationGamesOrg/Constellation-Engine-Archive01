@@ -1,3 +1,5 @@
+// Copyright (c) 2022 ConstellationEngine Developers (see [AUTHORS.md](AUTHORS.md))
+
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
