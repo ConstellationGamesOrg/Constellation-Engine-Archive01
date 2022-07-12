@@ -150,7 +150,7 @@ int main() {
 
 
 
-	// Create a cube
+	// Create 10 cubes
 	CE::core::Object cube1(vertices, false, true);
 	CE::core::Object cube2(vertices, false, true);
 	CE::core::Object cube3(vertices, false, true);
@@ -161,6 +161,18 @@ int main() {
 	CE::core::Object cube8(vertices, false, true);
 	CE::core::Object cube9(vertices, false, true);
 	CE::core::Object cube10(vertices, false, true);
+
+	// Set their starting position
+	cube1.translate({   0.0f,  0.0f,   0.0f });
+	cube2.translate({   2.0f,  5.0f, -15.0f });
+	cube3.translate({  -1.5f, -2.2f,  -2.5f });
+	cube4.translate({  -3.8f, -2.0f, -12.3f });
+	cube5.translate({   2.4f, -0.4f,  -3.5f });
+	cube6.translate({  -1.7f,  3.0f,  -7.5f });
+	cube7.translate({   1.3f, -2.0f,  -2.5f });
+	cube8.translate({   1.5f,  2.0f,  -2.5f });
+	cube9.translate({   1.5f,  0.2f,  -1.5f });
+	cube10.translate({ -1.3f,  1.0f,  -1.5f });
 
 
 
@@ -251,53 +263,46 @@ int main() {
 		glBindVertexArray(cube1.VAO);
 
 		// Render cubes
-		cube1.translate({ 0.0f, 0.0f, 0.0f });
-		cube1.rotate(20.0f * 0, { 1.0f, 0.3f, 0.5f });
-		cube1.set(&cubeShader);
-		cube1.draw();
+		cube1.movementSpeed = 5.0f;
+		cube1.translate({ 0.1f, 0.0f, 0.0f }, deltaTime); // This will move the cube by 0.1 on the x axis every frame. Its slow instead of really fast because of delta time
+		cube1.rotate(0.0f, { 1.0f, 0.3f, 0.5f }); // How to rotate the cubes
+		cube1.set(&cubeShader); // Set/Save the changes
+		cube1.draw(); // Now actually draw the cube!
 		
-		cube2.translate({ 2.0f,  5.0f, -15.0f });
-		cube2.rotate(20.0f * 1, { 1.0f, 0.3f, 0.5f });
+		cube1.translate({ 1.0f, 0.3f, 0.5f }); // If you do not add delta time, the cube will jump right to that position in world space, NOT move by that much, it will teleport there.
+		cube2.rotate(20.0f, { 1.0f, 0.3f, 0.5f });
 		cube2.set(&cubeShader);
 		cube2.draw();
 		
-		cube3.translate({ -1.5f, -2.2f,  -2.5f });
-		cube3.rotate(20.0f * 2, { 1.0f, 0.3f, 0.5f });
+		cube3.rotate(40.0f, { 1.0f, 0.3f, 0.5f });
 		cube3.set(&cubeShader);
 		cube3.draw();
 		
-		cube4.translate({ -3.8f, -2.0f, -12.3f });
-		cube4.rotate(20.0f * 3, { 1.0f, 0.3f, 0.5f });
+		cube4.rotate(60.0f, { 1.0f, 0.3f, 0.5f });
 		cube4.set(&cubeShader);
 		cube4.draw();
 		
-		cube5.translate({ 2.4f, -0.4f,  -3.5f });
-		cube5.rotate(20.0f * 4, { 1.0f, 0.3f, 0.5f });
+		cube5.rotate(80.0f, { 1.0f, 0.3f, 0.5f });
 		cube5.set(&cubeShader);
 		cube5.draw();
 
-		cube6.translate({ -1.7f, 3.0f, -7.5f });
-		cube6.rotate(20.0f * 5, { 1.0f, 0.3f, 0.5f });
+		cube6.rotate(100.0f, { 1.0f, 0.3f, 0.5f });
 		cube6.set(&cubeShader);
 		cube6.draw();
 		
-		cube7.translate({ 1.3f, -2.0f, -2.5f });
-		cube7.rotate(20.0f * 6, { 1.0f, 0.3f, 0.5f });
+		cube7.rotate(120.0f, { 1.0f, 0.3f, 0.5f });
 		cube7.set(&cubeShader);
 		cube7.draw();
 		
-		cube8.translate({ 1.5f, 2.0f, -2.5f });
-		cube8.rotate(20.0f * 7, { 1.0f, 0.3f, 0.5f });
+		cube8.rotate(140.0f, { 1.0f, 0.3f, 0.5f });
 		cube8.set(&cubeShader);
 		cube8.draw();
 		
-		cube9.translate({ 1.5f, 0.2f, -1.5f });
-		cube9.rotate(20.0f * 8, { 1.0f, 0.3f, 0.5f });
+		cube9.rotate(160.0f, { 1.0f, 0.3f, 0.5f });
 		cube9.set(&cubeShader);
 		cube9.draw();
 		
-		cube10.translate({ -1.3f, 1.0f, -1.5f });
-		cube10.rotate(20.0f * 9, { 1.0f, 0.3f, 0.5f });
+		cube10.rotate(180.0f, { 1.0f, 0.3f, 0.5f });
 		cube10.set(&cubeShader);
 		cube10.draw();
 

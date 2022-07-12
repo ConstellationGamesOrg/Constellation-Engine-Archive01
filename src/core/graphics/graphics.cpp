@@ -274,7 +274,12 @@ namespace CE {
 		}
 
 		void Object::translate(glm::vec3 newPosition) {
-			model = glm::translate(model, newPosition);
+			model = glm::translate(model, position = newPosition);
+		}
+
+		void Object::translate(glm::vec3 newPosition, float deltaTime) {
+			float velocity = movementSpeed * deltaTime;
+			model = glm::translate(model, position += newPosition * velocity);
 		}
 
 		void Object::rotate(float angle, glm::vec3 axis) {
@@ -284,6 +289,7 @@ namespace CE {
 		void Object::set(CE::core::Shader* shader) {
 			shader->setMat4("model", model);
 			model = glm::mat4(1.0f);
+			model = glm::translate(model, position);
 		}
 
 		void Object::draw() {

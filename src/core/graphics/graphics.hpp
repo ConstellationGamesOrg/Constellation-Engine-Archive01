@@ -83,11 +83,13 @@ namespace CE {
 		public:
 			// Vertex Buffer Object // Vertex Array Object
 			unsigned int VBO, VAO;
+			float movementSpeed = 2.5f;
 			glm::mat4 model = glm::mat4(1.0f);
 			glm::vec3 position = { 0.0f, 0.0f, 0.0f };
 			Object(std::vector<float> vertices, bool normal, bool texture);
 			void translate(glm::vec3 newPosition);
-			void rotate(float angle, glm::vec3 axis);
+			void translate(glm::vec3 newPosition, float deltaTime);
+			void rotate(float angle, glm::vec3 axis); // TODO: Save the rotation
 			void set(CE::core::Shader* shader);
 			void draw();
 			~Object();
