@@ -263,13 +263,13 @@ int main() {
 		glBindVertexArray(cube1.VAO);
 
 		// Render cubes
-		cube1.movementSpeed = 5.0f;
-		cube1.translate({ 0.1f, 0.0f, 0.0f }, deltaTime); // This will move the cube by 0.1 on the x axis every frame. Its slow instead of really fast because of delta time
+		cube1.movementSpeed = 0.5f; // You can change each cube's speed, default 2.5f
+		cube1.translate({ 0.0f, 0.0f, -1.0f }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
 		cube1.rotate(0.0f, { 1.0f, 0.3f, 0.5f }); // How to rotate the cubes
 		cube1.set(&cubeShader); // Set/Save the changes
 		cube1.draw(); // Now actually draw the cube!
 		
-		cube1.translate({ 1.0f, 0.3f, 0.5f }); // If you do not add delta time, the cube will jump right to that position in world space, NOT move by that much, it will teleport there.
+		cube2.translate({ 2.0f,  5.0f, -15.0f }); // If you do not add delta time, the cube will jump right to that position in world space, NOT move by that much, it will teleport there.
 		cube2.rotate(20.0f, { 1.0f, 0.3f, 0.5f });
 		cube2.set(&cubeShader);
 		cube2.draw();
