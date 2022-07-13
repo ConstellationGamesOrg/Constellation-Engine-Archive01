@@ -26,11 +26,11 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 // Input callback. Process all input
 void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
 
-	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)     // Check if the ESC key was pressed
 		glfwSetWindowShouldClose(window.window, true);                   // If so, close the window
-	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)      // Check if the Q key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)          // Check if the Q key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                       // If so, change draw mode to GL_FILL
-	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)      // Check if the E key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)          // Check if the E key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                       // If so, change draw mode to GL_LINE / wireframe
 
 
@@ -150,7 +150,7 @@ int main() {
 	CE::core::Object cube9(vertices, false, true);
 	CE::core::Object cube10(vertices, false, true);
 
-	// Set their starting positions
+	// Set each cube's starting position
 	cube1.translate( {  0.0f,   0.0f,   0.0f});
 	cube2.translate( {  2.0f,   5.0f, -15.0f});
 	cube3.translate( { -1.5f,  -2.2f,  -2.5f});
