@@ -27,6 +27,7 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 // Input callback. Process all input
 void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
+
 	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)     // Check if the ESC key was pressed
 		glfwSetWindowShouldClose(window.window, true);                   // If so, close the window
 	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)          // Check if the Q key was pressed
@@ -151,7 +152,7 @@ int main() {
 	CE::core::Object cube9(vertices, false, true);
 	CE::core::Object cube10(vertices, false, true);
 
-	// Set their starting positions
+	// Set each cube's starting position
 	cube1.translate( {  0.0f,   0.0f,   0.0f});
 	cube2.translate( {  2.0f,   5.0f, -15.0f});
 	cube3.translate( { -1.5f,  -2.2f,  -2.5f});
@@ -162,6 +163,8 @@ int main() {
 	cube8.translate( {  1.5f,   2.0f,  -2.5f});
 	cube9.translate( {  1.5f,   0.2f,  -1.5f});
 	cube10.translate({ -1.3f,   1.0f,  -1.5f});
+
+
 
 	// Load and create a texture
 	// -------------------------
