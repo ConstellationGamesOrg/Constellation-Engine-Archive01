@@ -19,6 +19,7 @@
 // ------------------------
 #include <iostream>
 #include <string>
+#include <stdio.h>
 
 namespace CE {
 	namespace core {
