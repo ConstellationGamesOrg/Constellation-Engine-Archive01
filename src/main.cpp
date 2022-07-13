@@ -27,12 +27,11 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 // Input callback. Process all input
 void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
-
-	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)     // Check if the ESC key was pressed
 		glfwSetWindowShouldClose(window.window, true);                   // If so, close the window
-	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)      // Check if the Q key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)          // Check if the Q key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                       // If so, change draw mode to GL_FILL
-	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)      // Check if the E key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)          // Check if the E key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                       // If so, change draw mode to GL_LINE / wireframe
 
 
@@ -163,8 +162,6 @@ int main() {
 	cube8.translate( {  1.5f,   2.0f,  -2.5f});
 	cube9.translate( {  1.5f,   0.2f,  -1.5f});
 	cube10.translate({ -1.3f,   1.0f,  -1.5f});
-
-
 
 	// Load and create a texture
 	// -------------------------
