@@ -44,6 +44,9 @@ namespace CE {
 			return 0;
 		}
 
+		Object::Object() {
+		}
+
 		Object::Object(std::vector<float> vertices, bool normal, bool texture) {
 			glGenBuffers(1, &VBO);
 			glGenVertexArrays(1, &VAO);

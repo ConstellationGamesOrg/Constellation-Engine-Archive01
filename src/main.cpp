@@ -198,7 +198,7 @@ int main() {
 	  
 	  CE::core::Object cubemesh(vertices, false, true);
 	  glm::vec3 value { rand() % 10, 0, rand() % 10 };
-	  CubeMonster monster(false, rand()% 20 +10, value, rand() % 10, 4000000, cubemesh);
+	  CubeMonster monster(false, rand()% 20 +10, value, rand() % 10, 4000000, &cubemesh);
 	  monster.mesh.translate({ 0.0f,  0.0f,   2.3f });
 	  damonsters.push_back(monster);
 	}
@@ -427,4 +427,14 @@ int main() {
 	window.cleanup();
 
 	return 0;
+}
+
+CubeMonster::CubeMonster(bool IsDeleted1, float speed1, glm::vec3 startingposition1, float mass1, float energy1, CE::core::Object* mesh1)
+{
+	IsDeleted = IsDeleted1;
+	speed = speed1;
+	startingposition = startingposition1;
+	mass = mass1;
+	energy = energy1;
+	mesh = *mesh1;
 }

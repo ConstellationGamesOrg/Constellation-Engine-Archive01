@@ -35,15 +35,13 @@ int main();
 
 class CubeMonster {
 public:
-	bool IsDeleted; 
-	float speed; 
+	bool IsDeleted;
+	float speed;
 	glm::vec3 startingposition;
 	float mass;
 	float energy;
 	CE::core::Object mesh;
-
-
-
+	CubeMonster(bool IsDeleted1, float speed1, glm::vec3 startingposition1, float mass1, float energy1, CE::core::Object* mesh1);
 };
 
 vector<CubeMonster> tobedestroyed;
