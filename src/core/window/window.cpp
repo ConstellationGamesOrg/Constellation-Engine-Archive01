@@ -15,7 +15,7 @@ namespace CE {
 
 			// Error handling
 			if (!window) {
-				// Failed to create GLFW window. If you have an Intel GPU, they are not 3.3 compatible.
+				printf("GLFW Window creation FAILED!\n");
 				glfwTerminate();
 				return -1;
 			}
@@ -23,7 +23,7 @@ namespace CE {
 			glfwMakeContextCurrent(window);
 
 			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-				// Failed to initialize GLAD
+				printf("GLAD Initialization FAILED!\n");
 
 				return -1;
 			}

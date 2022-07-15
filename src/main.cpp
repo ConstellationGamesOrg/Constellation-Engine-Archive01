@@ -8,22 +8,15 @@
 float deltaTime = 0.0f;	// deltaTime is the time between current frame and last frame
 float lastFrame = 0.0f;
 
-// Graphics
+
 CE::core::Graphics graphics;
-
-// Window
 CE::core::Window window;
-
-// Camera
 CE::core::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+CE::core::Input input;
+
 float lastX = window.width / 2.0f;
 float lastY = window.height / 2.0f;
 bool firstMouse = true;
-
-// Input
-CE::core::Input input;
-
-
 
 // Callback functions
 // ------------------
@@ -35,12 +28,12 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 // Input callback. Process all input
 void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
 
-	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
-		glfwSetWindowShouldClose(window.window, true);            // If so, close the window
-	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS) // Check if the Q key was pressed
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);    // If so, change draw mode to GL_FILL
-	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS) // Check if the E key was pressed
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);    // If so, change draw mode to GL_LINE / wireframe
+	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)     // Check if the ESC key was pressed
+		glfwSetWindowShouldClose(window.window, true);                   // If so, close the window
+	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)          // Check if the Q key was pressed
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                       // If so, change draw mode to GL_FILL
+	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)          // Check if the E key was pressed
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                       // If so, change draw mode to GL_LINE / wireframe
 
 
 	if (input.getKeyPress(window.window, GLFW_KEY_W) == GLFW_PRESS)
@@ -57,14 +50,12 @@ void processInput(CE::core::Window window, CE::core::Camera* camera, float delta
 		camera->ProcessKeyboard(CE::core::DOWN, deltaTime);
 }
 
-// Mouse callback. Whenever the mouse moves, this callback is called
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
-{
+// Mouse callback. Whenever the mouse moves, this function is called
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
 	float xpos = static_cast<float>(xposIn);
 	float ypos = static_cast<float>(yposIn);
 
-	if (firstMouse)
-	{
+	if (firstMouse) {
 		lastX = xpos;
 		lastY = ypos;
 		firstMouse = false;
@@ -79,9 +70,8 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 	camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
-// Scroll callback. Whenever the mouse scroll wheel scrolls, this callback is called
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
+// Scroll callback. Whenever the mouse scroll wheel scrolls, this function is called
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 	camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
 bool CheckIfCollision(CubeMonster cubemonster1, CubeMonster cubemonster2)
@@ -134,23 +124,23 @@ int main() {
 
 	window.create(800, 600, "Constellation Engine");
 
-	// Setup any callback functions
+	// Setup callback functions
 	glfwSetFramebufferSizeCallback(window.window, framebufferSizeCallback);
 	glfwSetCursorPosCallback(window.window, mouse_callback);
 	glfwSetScrollCallback(window.window, scroll_callback);
 
-	// Tell GLFW to capture our mouse
+	// Tell GLFW to capture the mouse
 	glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	window.clearColor = { 0.5f, 0.0f, 0.4f, 1.0f };
+	window.clearColor = {0.5f, 0.0f, 0.4f, 1.0f};
 
-	// Build and compile our shader program
+	// Build and compile the shader program
 	// ------------------------------------
 	CE::core::Shader cubeShader("data/shaders/cube.vert", "data/shaders/cube.frag");
 	
 	// Setup vertex data
 	std::vector<float> vertices = {
-		// Positions           // Texture coords
+	//    X      Y      Z       X     Y
 		-0.5f, -0.5f, -0.5f,   0.0f, 0.0f,
 		 0.5f, -0.5f, -0.5f,   1.0f, 0.0f,
 		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
@@ -194,8 +184,6 @@ int main() {
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f
 	};
 
-
-
 	// Create 10 cubes
 	CE::core::Object cube1(vertices, false, true);
 	CE::core::Object cube2(vertices, false, true);
@@ -212,9 +200,8 @@ int main() {
 	  CubeMonster monster(false, rand()% 20 +10, {rand() % 10,0,   rand() % 10}, rand() % 10, 4000000, cubemesh);
 	  monster.mesh.translate({ 0.0f,  0.0f,   2.3f });
 	  damonsters.push_back(monster);
-	
-
 	}
+  
 	// Set their starting position
 	cube1.translate({   0.0f,  0.0f,   2.3f });
 	cube2.translate({   2.0f,  0.0f, 4.5f });
@@ -222,8 +209,6 @@ int main() {
 	cube4.translate({  -3.8f, 0.0f,  5.6f });
 	cube5.translate({   2.4f, 0.0f,   4.7f });
 	cube6.translate({  -1.7f,  0.0f,   4.3f });
-	
-
 
 
 	// Load and create a texture
@@ -231,19 +216,14 @@ int main() {
 	CE::core::Texture texture1;
 	texture1.loadTexture("data/textures/PixelLogo.png");
 
-
-
-	// Tell OpenGL for each sampler to which texture unit it belongs to
-	// ----------------------------------------------------------------
-	// Activate the shader
 	cubeShader.use();
-	// Either set it via the texture class
+
+	// Tell OpenGL which sampler each texture unit belongs to
+	// ------------------------------------------------------
 	cubeShader.setInt("texture1", 0);
 
-
-
-	// Render loop
-	// -----------
+	// Program loop
+	// ------------
 	while (!window.shouldClose) {
 		// Per-frame time logic
 		// --------------------
@@ -444,5 +424,6 @@ int main() {
 	}
 
 	window.cleanup();
+
 	return 0;
 }
