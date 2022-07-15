@@ -23,8 +23,32 @@
 // ------------------------
 #include <iostream>
 #include <vector>
+#include <unordered_map>
+#include <cmath>
 
+using std::vector;
+using std::rand; 
 
 int main();
+
+
+
+class CubeMonster {
+public:
+	bool IsDeleted; 
+	float speed; 
+	glm::vec3 startingposition;
+	float mass;
+	float energy;
+	CE::core::Object mesh;
+
+
+
+};
+
+vector<CubeMonster> tobedestroyed;
+vector<CubeMonster> damonsters;
+vector<int> todie;
+vector<int> alreadytodie;
 
 #endif // MAIN_HPP

@@ -84,7 +84,51 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
+bool CheckIfCollision(CubeMonster cubemonster1, CubeMonster cubemonster2)
+{
+	
+	if (cubemonster1.mesh.position.x +  0.5 >= cubemonster2.mesh.position.x && cubemonster2.mesh.position.x + 0.5 >= cubemonster1.mesh.position.x
+		 && cubemonster1.mesh.position.z + 0.5 >= cubemonster2.mesh.position.z && cubemonster2.mesh.position.z + 0.5 >= cubemonster1.mesh.position.z)
+	{
 
+		return true;
+	}
+	return false; 
+}
+void MeetAndKill(int i, int j )
+{
+	
+			if (CheckIfCollision(damonsters[i], damonsters[j]) && i != j)
+			{
+				if (damonsters[i].mass > damonsters[j].mass)
+				{
+					damonsters[j].IsDeleted = true;
+					damonsters[i].energy -= 100000;
+					damonsters[i].energy += damonsters[j].energy;
+					std::cout << j << "kill " << std::endl;
+					
+
+				}
+				if (damonsters[j].mass > damonsters[i].mass)
+				{
+					damonsters[i].IsDeleted = true;
+					damonsters[j].energy = damonsters[i].energy / 2;
+					damonsters[j].energy += damonsters[j].energy;
+					std::cout << i << "kill " << std::endl;
+				}
+				else
+				{
+
+
+				}
+				
+			}
+
+
+	
+
+
+}
 int main() {
 	graphics.create();
 
@@ -159,22 +203,26 @@ int main() {
 	CE::core::Object cube4(vertices, false, true);
 	CE::core::Object cube5(vertices, false, true);
 	CE::core::Object cube6(vertices, false, true);
-	CE::core::Object cube7(vertices, false, true);
-	CE::core::Object cube8(vertices, false, true);
-	CE::core::Object cube9(vertices, false, true);
-	CE::core::Object cube10(vertices, false, true);
+	
 
+	for (int i = 0; i < 20; i++)
+	{
+	  
+	  CE::core::Object cubemesh(vertices, false, true);
+	  CubeMonster monster(false, rand()% 20 +10, {rand() % 10,0,   rand() % 10}, rand() % 10, 4000000, cubemesh);
+	  monster.mesh.translate({ 0.0f,  0.0f,   2.3f });
+	  damonsters.push_back(monster);
+	
+
+	}
 	// Set their starting position
-	cube1.translate({   0.0f,  0.0f,   0.0f });
-	cube2.translate({   2.0f,  5.0f, -15.0f });
-	cube3.translate({  -1.5f, -2.2f,  -2.5f });
-	cube4.translate({  -3.8f, -2.0f, -12.3f });
-	cube5.translate({   2.4f, -0.4f,  -3.5f });
-	cube6.translate({  -1.7f,  3.0f,  -7.5f });
-	cube7.translate({   1.3f, -2.0f,  -2.5f });
-	cube8.translate({   1.5f,  2.0f,  -2.5f });
-	cube9.translate({   1.5f,  0.2f,  -1.5f });
-	cube10.translate({ -1.3f,  1.0f,  -1.5f });
+	cube1.translate({   0.0f,  0.0f,   2.3f });
+	cube2.translate({   2.0f,  0.0f, 4.5f });
+	cube3.translate({  -1.5f, 0.0f,  6.1f });
+	cube4.translate({  -3.8f, 0.0f,  5.6f });
+	cube5.translate({   2.4f, 0.0f,   4.7f });
+	cube6.translate({  -1.7f,  0.0f,   4.3f });
+	
 
 
 
@@ -252,7 +300,7 @@ int main() {
 		// TODO: Move all this stuff to graphics render
 		
 		// Activate shader
-		cubeShader.use();
+	
 
 		// Update projection and view matrix
 		window.updateMatrices(&cubeShader, &camera);
@@ -264,53 +312,134 @@ int main() {
 		// Bind the cubeVAO
 		glBindVertexArray(cube1.VAO);
 
+		//From here onwards you are entering the land of messy code. 
+		//Checks if any are alive. 
+
+		if (damonsters.size() == 0)
+		{
+
+			std::cout << "0 left alive! " << std::endl;
+		}
+		//For loop, iterating through each "monster" once. 
+		for (int i = 0; i < damonsters.size();)
+		{
+			if (damonsters[i].mesh.position.x > 30|| damonsters[i].mesh.position.z> 30||
+				damonsters[i].mesh.position.x < -30|| damonsters[i].mesh.position.z> -30)
+			{
+				damonsters[i].mesh.position.x = rand() % 10;
+				damonsters[i].mesh.position.z = rand() % 10;
+				damonsters[i].mesh.movementSpeed -= 40;
+				
+				
+
+			}
+		    //Deleted bool, if deleted is true, the things gets deleted in the else statement otherwise the process is allowed to continue. 
+			if (damonsters[i].IsDeleted != true)
+			{
+				std::cout << damonsters[i].energy << std::endl;
+				//drains energy based on speed and mass. Mass particularly but didn't seem to stop "fortress" cubes.  
+				damonsters[i].energy -= damonsters[i].speed * pow(damonsters[i].mass, 3);
+                
+				if (damonsters[i].energy > 0)
+				{
+					std::cout << damonsters[i].speed << "speed" <<std::endl;
+					if (damonsters[i].energy >= 2000000)
+					{
+						if (damonsters.size() < 80)
+						{
+							CE::core::Object cubemesh(vertices, false, true);
+							CubeMonster monster = damonsters[i];
+							monster.speed *= (rand() % 3 + 99) / 1000000000000000 + 1 ;
+							monster.mass *= (rand() % 3 + 99) / 10000000000000000;
+							monster.energy = 4000000;
+							monster.mesh.translate(glm::vec3(damonsters[i].mesh.position.x + rand() % 6 - 3,0, damonsters[i].mesh.position.z + rand() % 6 - 3));
+						
+							damonsters.push_back(monster);
+							damonsters[i].energy -= 4000;
+
+						}
+						
+
+					}
+
+					damonsters[i].mesh.movementSpeed = damonsters[i].speed; // You can change each cube's speed, default 2.5f
+					damonsters[i].mesh.translate({ rand() % 3 - 1, 0,  rand() % 3 - 1 }, deltaTime);
+					damonsters[i].mesh.set(&cubeShader);
+					damonsters[i].mesh.draw();
+					i++; 
+
+				}
+				else
+				{
+
+					damonsters.erase(damonsters.begin() + i
+					);
+
+				}
+
+			}
+			else
+			{
+
+				damonsters.erase(damonsters.begin() + i);
+			}
+			
+			
+			
+			
+
+		}
+		for (int i = 0; i < damonsters.size(); i++)
+		{
+			for (int j = 0; j < damonsters.size(); j++)
+			{
+				MeetAndKill(i, j);
+
+			}
+
+		}
+
+	
+		
+		
+		
+		
+		/*
 		// Render cubes
-		cube1.movementSpeed = 0.5f; // You can change each cube's speed, default 2.5f
-		cube1.translate({ 0.0f, 0.0f, -1.0f }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube1.rotate(0.0f, { 1.0f, 0.3f, 0.5f }); // How to rotate the cubes
+		cube1.movementSpeed = 4; // You can change each cube's speed, default 2.5f
+		cube1.translate({ rand() % 3 - 1, 0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
 		cube1.set(&cubeShader); // Set/Save the changes
 		cube1.draw(); // Now actually draw the cube!
 		
-		cube2.translate({ 2.0f,  5.0f, -15.0f }); // If you do not add delta time, the cube will jump right to that position in world space, NOT move by that much, it will teleport there.
-		cube2.rotate(20.0f, { 1.0f, 0.3f, 0.5f });
-		cube2.set(&cubeShader);
-		cube2.draw();
+		cube2.movementSpeed = 4; // You can change each cube's speed, default 2.5f
+		cube2.translate({ rand() % 3 - 1, 0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+		cube2.set(&cubeShader); // Set/Save the changes
+		cube2.draw(); // Now actually draw the cube!
 		
-		cube3.rotate(40.0f, { 1.0f, 0.3f, 0.5f });
-		cube3.set(&cubeShader);
-		cube3.draw();
+		cube3.movementSpeed = 4; // You can change each cube's speed, default 2.5f
+		cube3.translate({ rand() % 3 - 1,  0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+		cube3.set(&cubeShader); // Set/Save the changes
+		cube3.draw(); // Now actually draw the cube!
 		
-		cube4.rotate(60.0f, { 1.0f, 0.3f, 0.5f });
-		cube4.set(&cubeShader);
-		cube4.draw();
+		cube4.movementSpeed = 4; // You can change each cube's speed, default 2.5f
+		cube4.translate({ rand() % 3 - 1,  0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+		cube4.set(&cubeShader); // Set/Save the changes
+		cube4.draw(); // Now actually draw the cube!
 		
-		cube5.rotate(80.0f, { 1.0f, 0.3f, 0.5f });
-		cube5.set(&cubeShader);
-		cube5.draw();
-
-		cube6.rotate(100.0f, { 1.0f, 0.3f, 0.5f });
-		cube6.set(&cubeShader);
-		cube6.draw();
+		cube5.movementSpeed =4; // You can change each cube's speed, default 2.5f
+		cube5.translate({ rand() % 3 - 1,  0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+		cube5.set(&cubeShader); // Set/Save the changes
+		cube5.draw(); // Now actually draw the cube!
 		
-		cube7.rotate(120.0f, { 1.0f, 0.3f, 0.5f });
-		cube7.set(&cubeShader);
-		cube7.draw();
-		
-		cube8.rotate(140.0f, { 1.0f, 0.3f, 0.5f });
-		cube8.set(&cubeShader);
-		cube8.draw();
-		
-		cube9.rotate(160.0f, { 1.0f, 0.3f, 0.5f });
-		cube9.set(&cubeShader);
-		cube9.draw();
-		
-		cube10.rotate(180.0f, { 1.0f, 0.3f, 0.5f });
-		cube10.set(&cubeShader);
-		cube10.draw();
+		cube6.movementSpeed = 4;// You can change each cube's speed, default 2.5f
+		cube6.translate({ rand() % 3 - 1, 0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+		cube6.set(&cubeShader); // Set/Save the changes
+		cube6.draw(); // Now actually draw the cube!
+		*/
 
 		// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
 		glBindVertexArray(0);
-
+		std::cout << damonsters.size() << std::endl;
 		window.update();
 	}
 
