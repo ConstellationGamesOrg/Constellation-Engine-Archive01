@@ -7,7 +7,6 @@
     <ClCompile Include="src\utils\utils.cpp" />
     <ClCompile Include="src\core\graphics\graphics.cpp" />
     <ClCompile Include="src\core\input\input.cpp" />
-    <ClCompile Include="genetic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AUTHORS.md" />
@@ -24,7 +23,6 @@
     <ClInclude Include="src\core\graphics\graphics.hpp" />
     <ClInclude Include="src\core\camera\camera.hpp" />
     <ClInclude Include="src\core\input\input.hpp" />
-    <ClInclude Include="genetic.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\textures\PixelLogo.png" />
