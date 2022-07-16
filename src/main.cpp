@@ -197,7 +197,7 @@ int main() {
 	{
 	  
 	  CE::core::Object cubemesh(vertices, false, true);
-	  glm::vec3 value = { rand() % 10, 0, rand() % 10 };
+	  glm::vec3 value = { (float)(rand() % 10), 0.0f, (float)(rand() % 10) };
 	  CubeMonster monster(false, rand()% 20 +10, value, rand() % 10, 4000000, &cubemesh);
 	  monster.mesh.translate({ 0.0f,  0.0f,   2.3f });
 	  damonsters.push_back(monster);
