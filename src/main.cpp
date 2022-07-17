@@ -48,6 +48,30 @@ void processInput(CE::core::Window window, CE::core::Camera* camera, float delta
 		camera->ProcessKeyboard(CE::core::UP, deltaTime);
 	if (input.getKeyPress(window.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::DOWN, deltaTime);
+
+	if (input.getKeyPress(window.window, GLFW_KEY_RIGHT)) {
+		if (window.clearColor[1] < 1.0f)
+			window.clearColor[1] += 0.01f;
+		else
+			window.clearColor[1] = 1.0f;
+	} if (input.getKeyPress(window.window, GLFW_KEY_LEFT)) {
+		if (window.clearColor[1] > 0.0f)
+			window.clearColor[1] -= 0.01f;
+		else
+			window.clearColor[1] = 0.0f;
+	}
+
+	if (input.getKeyPress(window.window, GLFW_KEY_UP)) {
+		if (window.clearColor[0] < 1.0f)
+			window.clearColor[0] += 0.01f;
+		else
+			window.clearColor[0] = 1.0f;
+	} if (input.getKeyPress(window.window, GLFW_KEY_DOWN)) {
+		if (window.clearColor[0] > 0.0f)
+			window.clearColor[0] -= 0.01f;
+		else
+			window.clearColor[0] = 0.0f;
+	}
 }
 
 // Mouse callback. Whenever the mouse moves, this function is called
@@ -93,7 +117,7 @@ int main() {
 	// Build and compile the shader program
 	// ------------------------------------
 	CE::core::Shader cubeShader("data/shaders/cube.vert", "data/shaders/cube.frag");
-	
+
 	// Setup vertex data
 	std::vector<float> vertices = {
 	//    X      Y      Z       X     Y
@@ -103,35 +127,35 @@ int main() {
 		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f,   0.0f, 0.0f,
-							   
+
 		-0.5f, -0.5f,  0.5f,   0.0f, 0.0f,
 		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
 		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
 		 0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
 		-0.5f,  0.5f,  0.5f,   0.0f, 1.0f,
 		-0.5f, -0.5f,  0.5f,   0.0f, 0.0f,
-							   
+
 		-0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
 		-0.5f, -0.5f,  0.5f,   0.0f, 0.0f,
 		-0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
-							   
+
 		 0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
 		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
 		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
 		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
 		 0.5f, -0.5f,  0.5f,   0.0f, 0.0f,
 		 0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
-							   
+
 		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
 		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f,
 		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
 		 0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
 		-0.5f, -0.5f,  0.5f,   0.0f, 0.0f,
 		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
-							   
+
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f,
 		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
 		 0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
@@ -140,29 +164,26 @@ int main() {
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f
 	};
 
+
 	// Create 10 cubes
-	CE::core::Object cube1(vertices, false, true);
-	CE::core::Object cube2(vertices, false, true);
-	CE::core::Object cube3(vertices, false, true);
-	CE::core::Object cube4(vertices, false, true);
-	CE::core::Object cube5(vertices, false, true);
-	CE::core::Object cube6(vertices, false, true);
-	CE::core::Object cube7(vertices, false, true);
-	CE::core::Object cube8(vertices, false, true);
-	CE::core::Object cube9(vertices, false, true);
-	CE::core::Object cube10(vertices, false, true);
+	std::vector <CE::core::Object*> cubes;
+
+	for (int i = 0; i <= 10; i++) {
+		CE::core::Object* newCubePointer = new CE::core::Object(vertices, false, true);
+		cubes.push_back(newCubePointer);
+	}
 
 	// Set each cube's starting position
-	cube1.translate( {  0.0f,   0.0f,   0.0f});
-	cube2.translate( {  2.0f,   5.0f, -15.0f});
-	cube3.translate( { -1.5f,  -2.2f,  -2.5f});
-	cube4.translate( { -3.8f,  -2.0f, -12.3f});
-	cube5.translate( {  2.4f,  -0.4f,  -3.5f});
-	cube6.translate( { -1.7f,   3.0f,  -7.5f});
-	cube7.translate( {  1.3f,  -2.0f,  -2.5f});
-	cube8.translate( {  1.5f,   2.0f,  -2.5f});
-	cube9.translate( {  1.5f,   0.2f,  -1.5f});
-	cube10.translate({ -1.3f,   1.0f,  -1.5f});
+	cubes[0]->translate( {  0.0f,   0.0f,   0.0f});
+	cubes[1]->translate( {  2.0f,   5.0f, -15.0f});
+	cubes[2]->translate( { -1.5f,  -2.2f,  -2.5f});
+	cubes[3]->translate( { -3.8f,  -2.0f, -12.3f});
+	cubes[4]->translate( {  2.4f,  -0.4f,  -3.5f});
+	cubes[5]->translate( { -1.7f,   3.0f,  -7.5f});
+	cubes[6]->translate( {  1.3f,  -2.0f,  -2.5f});
+	cubes[7]->translate( {  1.5f,   2.0f,  -2.5f});
+	cubes[8]->translate( {  1.5f,   0.2f,  -1.5f});
+	cubes[9]->translate( { -1.3f,   1.0f,  -1.5f});
 
 
 
@@ -186,46 +207,9 @@ int main() {
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-
-
 		// Input
 		// -----
 		processInput(window, &camera, deltaTime);
-
-		// TODO: Move this to process input
-		if (input.getKeyPress(window.window, GLFW_KEY_RIGHT)) {
-			if (window.clearColor[1] < 1.0f) {
-				window.clearColor[1] += 0.01f;
-			}
-			else {
-				window.clearColor[1] = 1.0f;
-			}
-		} if (input.getKeyPress(window.window, GLFW_KEY_LEFT)) {
-			if (window.clearColor[1] > 0.0f) {
-				window.clearColor[1] -= 0.01f;
-			}
-			else {
-				window.clearColor[1] = 0.0f;
-			}
-		}
-
-		if (input.getKeyPress(window.window, GLFW_KEY_UP)) {
-			if (window.clearColor[0] < 1.0f) {
-				window.clearColor[0] += 0.01f;
-			}
-			else {
-				window.clearColor[0] = 1.0f;
-			}
-		} if (input.getKeyPress(window.window, GLFW_KEY_DOWN)) {
-			if (window.clearColor[0] > 0.0f) {
-				window.clearColor[0] -= 0.01f;
-			}
-			else {
-				window.clearColor[0] = 0.0f;
-			}
-		}
-
-
 
 		// Render
 		// ------
@@ -233,7 +217,7 @@ int main() {
 		// graphics.render();
 
 		// TODO: Move all this stuff to graphics render
-		
+
 		// Activate shader
 		cubeShader.use();
 
@@ -245,56 +229,31 @@ int main() {
 		glBindTexture(GL_TEXTURE_2D, texture1.textureID);
 
 		// Bind the cubeVAO
-		glBindVertexArray(cube1.VAO);
+		glBindVertexArray(cubes[0]->VAO);
 
-		// Render cubes
-		cube1.movementSpeed = 0.5f; // You can change each cube's speed, default 2.5f
-		cube1.translate({ 0.0f, 0.0f, -1.0f }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube1.rotate(0.0f, { 1.0f, 0.3f, 0.5f }); // How to rotate the cubes
-		cube1.set(&cubeShader); // Set/Save the changes
-		cube1.draw(); // Now actually draw the cube!
-		
-		cube2.translate({ 2.0f,  5.0f, -15.0f }); // If you do not add delta time, the cube will jump right to that position in world space, NOT move by that much, it will teleport there.
-		cube2.rotate(20.0f, { 1.0f, 0.3f, 0.5f });
-		cube2.set(&cubeShader);
-		cube2.draw();
-		
-		cube3.rotate(40.0f, { 1.0f, 0.3f, 0.5f });
-		cube3.set(&cubeShader);
-		cube3.draw();
-		
-		cube4.rotate(60.0f, { 1.0f, 0.3f, 0.5f });
-		cube4.set(&cubeShader);
-		cube4.draw();
-		
-		cube5.rotate(80.0f, { 1.0f, 0.3f, 0.5f });
-		cube5.set(&cubeShader);
-		cube5.draw();
+		// Update + render the cubes
+		float rd = 0.0f;
+		for (int i = 0; i <= 10; i++) {
+			cubes[i]->rotate(rd, {1.0f, 0.3f, 0.5f});
+			cubes[i]->set(&cubeShader);
+			cubes[i]->draw();
+			rd += 20.0f;
+		}
 
-		cube6.rotate(100.0f, { 1.0f, 0.3f, 0.5f });
-		cube6.set(&cubeShader);
-		cube6.draw();
-		
-		cube7.rotate(120.0f, { 1.0f, 0.3f, 0.5f });
-		cube7.set(&cubeShader);
-		cube7.draw();
-		
-		cube8.rotate(140.0f, { 1.0f, 0.3f, 0.5f });
-		cube8.set(&cubeShader);
-		cube8.draw();
-		
-		cube9.rotate(160.0f, { 1.0f, 0.3f, 0.5f });
-		cube9.set(&cubeShader);
-		cube9.draw();
-		
-		cube10.rotate(180.0f, { 1.0f, 0.3f, 0.5f });
-		cube10.set(&cubeShader);
-		cube10.draw();
+		cubes[0]->movementSpeed = 0.5f; // You can change each cube's speed, default 2.5f
+		cubes[0]->translate({ 0.0f, 0.0f, -1.0f }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+
+		// If you do not add delta time, the cube will jump right to that position in world space, NOT move by that much, it will teleport there.
+		cubes[1]->translate({ 2.0f,  5.0f, -15.0f });
 
 		// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
 		glBindVertexArray(0);
 
 		window.update();
+	}
+
+	for (int i = 0; i < cubes.size(); i++) {
+		delete cubes[i];
 	}
 
 	window.cleanup();
