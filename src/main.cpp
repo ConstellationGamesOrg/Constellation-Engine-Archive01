@@ -8,7 +8,6 @@
 float deltaTime = 0.0f;	// deltaTime is the time between current frame and last frame
 float lastFrame = 0.0f;
 
-
 CE::core::Graphics graphics;
 CE::core::Window window;
 CE::core::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -27,14 +26,12 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 // Input callback. Process all input
 void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
-
-	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)     // Check if the ESC key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
 		glfwSetWindowShouldClose(window.window, true);                   // If so, close the window
-	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)          // Check if the Q key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)      // Check if the Q key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                       // If so, change draw mode to GL_FILL
-	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)          // Check if the E key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)      // Check if the E key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                       // If so, change draw mode to GL_LINE / wireframe
-
 
 	if (input.getKeyPress(window.window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::FORWARD, deltaTime);
@@ -48,50 +45,11 @@ void processInput(CE::core::Window window, CE::core::Camera* camera, float delta
 		camera->ProcessKeyboard(CE::core::UP, deltaTime);
 	if (input.getKeyPress(window.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::DOWN, deltaTime);
-
-	if (input.getKeyPress(window.window, GLFW_KEY_RIGHT)) {
-		if (window.clearColor[1] < 1.0f)
-			window.clearColor[1] += 0.01f;
-		else
-			window.clearColor[1] = 1.0f;
-	} if (input.getKeyPress(window.window, GLFW_KEY_LEFT)) {
-		if (window.clearColor[1] > 0.0f)
-			window.clearColor[1] -= 0.01f;
-		else
-			window.clearColor[1] = 0.0f;
-	}
-
-	if (input.getKeyPress(window.window, GLFW_KEY_UP)) {
-		if (window.clearColor[0] < 1.0f)
-			window.clearColor[0] += 0.01f;
-		else
-			window.clearColor[0] = 1.0f;
-	} if (input.getKeyPress(window.window, GLFW_KEY_DOWN)) {
-		if (window.clearColor[0] > 0.0f)
-			window.clearColor[0] -= 0.01f;
-		else
-			window.clearColor[0] = 0.0f;
-	}
 }
 
 // Mouse callback. Whenever the mouse moves, this function is called
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
-	float xpos = static_cast<float>(xposIn);
-	float ypos = static_cast<float>(yposIn);
-
-	if (firstMouse) {
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
-	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to top
-
-	lastX = xpos;
-	lastY = ypos;
-
-	camera.ProcessMouseMovement(xoffset, yoffset);
+	camera.ProcessMouseMovement(xposIn, yposIn);
 }
 
 // Scroll callback. Whenever the mouse scroll wheel scrolls, this function is called
@@ -108,9 +66,6 @@ int main() {
 	glfwSetFramebufferSizeCallback(window.window, framebufferSizeCallback);
 	glfwSetCursorPosCallback(window.window, mouse_callback);
 	glfwSetScrollCallback(window.window, scroll_callback);
-
-	// Tell GLFW to capture the mouse
-	glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	window.clearColor = {0.5f, 0.0f, 0.4f, 1.0f};
 
@@ -168,7 +123,7 @@ int main() {
 	// Create 10 cubes
 	std::vector <CE::core::Object*> cubes;
 
-	for (int i = 0; i <= 10; i++) {
+	for (int i = 0; i <= 9; i++) {
 		CE::core::Object* newCubePointer = new CE::core::Object(vertices, false, true);
 		cubes.push_back(newCubePointer);
 	}
@@ -185,8 +140,6 @@ int main() {
 	cubes[8]->translate( {  1.5f,   0.2f,  -1.5f});
 	cubes[9]->translate( { -1.3f,   1.0f,  -1.5f});
 
-
-
 	// Load and create a texture
 	// -------------------------
 	CE::core::Texture texture1;
@@ -201,22 +154,13 @@ int main() {
 	// Program loop
 	// ------------
 	while (!window.shouldClose) {
-		// Per-frame time logic
-		// --------------------
-		float currentFrame = static_cast<float>(glfwGetTime());
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
 		// Input
 		// -----
-		processInput(window, &camera, deltaTime);
+		processInput(window, &camera, window.dt);
 
 		// Render
 		// ------
 		window.clear();
-		// graphics.render();
-
-		// TODO: Move all this stuff to graphics render
 
 		// Activate shader
 		cubeShader.use();
@@ -225,25 +169,25 @@ int main() {
 		window.updateMatrices(&cubeShader, &camera);
 
 		// Bind texture1
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture1.textureID);
+	 	texture1.bindTexture();
 
 		// Bind the cubeVAO
 		glBindVertexArray(cubes[0]->VAO);
 
 		// Update + render the cubes
 		float rd = 0.0f;
-		for (int i = 0; i <= 10; i++) {
+		for (int i = 0; i <= 9; i++) {
 			cubes[i]->rotate(rd, {1.0f, 0.3f, 0.5f});
 			cubes[i]->set(&cubeShader);
 			cubes[i]->draw();
+
 			rd += 20.0f;
 		}
 
 		cubes[0]->movementSpeed = 0.5f; // You can change each cube's speed, default 2.5f
-		cubes[0]->translate({ 0.0f, 0.0f, -1.0f }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+		cubes[0]->translate({ 0.0f, 0.0f, -1.0f }, window.dt); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
 
-		// If you do not add delta time, the cube will jump right to that position in world space, NOT move by that much, it will teleport there.
+		// If you do not add delta time, the cube will almost instantaneously jump right to that position in world space, NOT move by that much, it will teleport there.
 		cubes[1]->translate({ 2.0f,  5.0f, -15.0f });
 
 		// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
@@ -252,7 +196,7 @@ int main() {
 		window.update();
 	}
 
-	for (int i = 0; i < cubes.size(); i++) {
+	for (size_t i = 0; i < cubes.size(); i++) {
 		delete cubes[i];
 	}
 
