@@ -133,8 +133,7 @@ namespace CE {
 			}
 
 			// Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
-			void ProcessMouseScroll(float yoffset)
-			{
+			void ProcessMouseScroll(float yoffset) {
 				Zoom -= (float)yoffset;
 				if (Zoom < 1.0f)
 					Zoom = 1.0f;
@@ -148,8 +147,7 @@ namespace CE {
 			bool firstMouse = true;
 
 			// Calculates the front vector from the Camera's (updated) Euler Angles
-			void updateCameraVectors()
-			{
+			void updateCameraVectors() {
 				// Calculate the new Front vector
 				glm::vec3 front;
 				front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
