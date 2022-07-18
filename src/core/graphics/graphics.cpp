@@ -93,7 +93,7 @@ namespace CE {
 				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 				glEnableVertexAttribArray(1);
 			}
-			
+
 
 			// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
 			glBindVertexArray(0);
@@ -273,6 +273,11 @@ namespace CE {
 				std::cout << "Texture failed to load at path: " << path << std::endl;
 				stbi_image_free(data);
 			}
+		}
+
+		void Texture::bindTexture() {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, textureID);
 		}
 
 		void Object::translate(glm::vec3 newPosition) {
