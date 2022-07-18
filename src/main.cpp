@@ -45,16 +45,11 @@ void processInput(CE::core::Window window, CE::core::Camera* camera, float delta
 		camera->ProcessKeyboard(CE::core::UP, deltaTime);
 	if (input.getKeyPress(window.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::DOWN, deltaTime);
-
-	if (glfwGetKey(window.window, GLFW_KEY_F) == GLFW_PRESS)
-		glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	if (glfwGetMouseButton(window.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-		glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 // Mouse callback. Whenever the mouse moves, this function is called
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
-	camera.ProcessMouseMovement(window, xposIn, yposIn);
+	camera.ProcessMouseMovement(xposIn, yposIn);
 }
 
 // Scroll callback. Whenever the mouse scroll wheel scrolls, this function is called

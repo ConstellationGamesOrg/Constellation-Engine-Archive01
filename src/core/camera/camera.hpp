@@ -93,12 +93,7 @@ namespace CE {
 			}
 
 			// Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-			void ProcessMouseMovement(GLFWwindow* window, double xposIn, double yposIn, GLboolean constrainPitch = true) {
-				if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL) {
-					firstMouse = true;
-					return;
-				}
-
+			void ProcessMouseMovement(double xposIn, double yposIn, GLboolean constrainPitch = true) {
 				float xpos = static_cast<float>(xposIn);
 				float ypos = static_cast<float>(yposIn);
 
