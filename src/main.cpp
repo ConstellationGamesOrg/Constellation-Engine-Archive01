@@ -243,46 +243,11 @@ int main() {
 			for (int j = 0; j < damonsters.size(); j++)
 				damonsters[i].MeetAndKill(damonsters[j]);
 		}
-
-		/*
-		// Render cubes
-		cube1.movementSpeed = 4; // You can change each cube's speed, default 2.5f
-		cube1.translate({ rand() % 3 - 1, 0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube1.set(&cubeShader); // Set/Save the changes
-		cube1.draw(); // Now actually draw the cube!
-
-		cube2.movementSpeed = 4; // You can change each cube's speed, default 2.5f
-		cube2.translate({ rand() % 3 - 1, 0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube2.set(&cubeShader); // Set/Save the changes
-		cube2.draw(); // Now actually draw the cube!
-
-		cube3.movementSpeed = 4; // You can change each cube's speed, default 2.5f
-		cube3.translate({ rand() % 3 - 1,  0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube3.set(&cubeShader); // Set/Save the changes
-		cube3.draw(); // Now actually draw the cube!
-
-		cube4.movementSpeed = 4; // You can change each cube's speed, default 2.5f
-		cube4.translate({ rand() % 3 - 1,  0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube4.set(&cubeShader); // Set/Save the changes
-		cube4.draw(); // Now actually draw the cube!
-
-		cube5.movementSpeed =4; // You can change each cube's speed, default 2.5f
-		cube5.translate({ rand() % 3 - 1,  0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube5.set(&cubeShader); // Set/Save the changes
-		cube5.draw(); // Now actually draw the cube!
-
-		cube6.movementSpeed = 4;// You can change each cube's speed, default 2.5f
-		cube6.translate({ rand() % 3 - 1, 0,  rand() % 3 - 1 }, deltaTime); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
-		cube6.set(&cubeShader); // Set/Save the changes
-		cube6.draw(); // Now actually draw the cube!
-		*/
-
 		glBindVertexArray(cubes[0]->VAO);
 
-		/*
 		// Update + render the cubes
 		float rd = 0.0f;
-		for (int i = 0; i <= 9; i++) {
+		for (int i = 0; i <= 5; i++) {
 			cubes[i]->rotate(rd, {1.0f, 0.3f, 0.5f});
 			cubes[i]->set(&cubeShader);
 			cubes[i]->draw();
@@ -294,7 +259,7 @@ int main() {
 		cubes[0]->translate({ 0.0f, 0.0f, -1.0f }, window.dt); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
 
 		// If you do not add delta time, the cube will almost instantaneously jump right to that position in world space, NOT move by that much, it will teleport there.
-		cubes[1]->translate({ 2.0f,  5.0f, -15.0f }); */
+		cubes[1]->translate({ 2.0f,  5.0f, -15.0f });
 
 		// Unbind VAO (It's always a good thing to unbind buffers/arrays to prevent strange bugs)
 		glBindVertexArray(0);
