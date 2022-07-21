@@ -80,6 +80,7 @@ namespace CE {
 			float movementSpeed = 2.5f;
 			glm::mat4 model = glm::mat4(1.0f);
 			glm::vec3 position = { 0.0f, 0.0f, 0.0f };
+			Object();
 			Object(std::vector<float> vertices, bool normal, bool texture);
 			void translate(glm::vec3 newPosition);
 			void translate(glm::vec3 newPosition, float deltaTime);

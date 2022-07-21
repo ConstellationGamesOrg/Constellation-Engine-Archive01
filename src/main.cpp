@@ -17,6 +17,11 @@ float lastX = window.width / 2.0f;
 float lastY = window.height / 2.0f;
 bool firstMouse = true;
 
+std::vector<CE::AI::CubeMonster> tobedestroyed;
+std::vector<CE::AI::CubeMonster> damonsters;
+std::vector<int> todie;
+std::vector<int> alreadytodie;
+
 // Callback functions
 // ------------------
 // Whenever the window size changes (by OS or user resize) this callback function executes
@@ -124,11 +129,19 @@ int main() {
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f
 	};
 
+	// Create cubes
+	for (int i = 0; i < 20; i++) {
+		CE::core::Object cubemesh(vertices, false, true);
+		glm::vec3 value = {(float)(std::rand() % 10), 0.0f, (float)(std::rand() % 10)};
+		CE::AI::CubeMonster monster(false, std::rand()% 20 +10, value, std::rand() % 10, 4000000, &cubemesh);
 
-	// Create 10 cubes
+		monster.mesh.translate({0.0f,  0.0f,   2.3});
+		damonsters.push_back(monster);
+	}
+
 	std::vector <CE::core::Object*> cubes;
 
-	for (int i = 0; i <= 9; i++) {
+	for (int i = 0; i <= 5; i++) {
 		CE::core::Object* newCubePointer = new CE::core::Object(vertices, false, true);
 		cubes.push_back(newCubePointer);
 	}
@@ -140,10 +153,6 @@ int main() {
 	cubes[3]->translate( { -3.8f,  -2.0f, -12.3f});
 	cubes[4]->translate( {  2.4f,  -0.4f,  -3.5f});
 	cubes[5]->translate( { -1.7f,   3.0f,  -7.5f});
-	cubes[6]->translate( {  1.3f,  -2.0f,  -2.5f});
-	cubes[7]->translate( {  1.5f,   2.0f,  -2.5f});
-	cubes[8]->translate( {  1.5f,   0.2f,  -1.5f});
-	cubes[9]->translate( { -1.3f,   1.0f,  -1.5f});
 
 	// Load and create a texture
 	// -------------------------
@@ -179,9 +188,66 @@ int main() {
 		// Bind the cubeVAO
 		glBindVertexArray(cubes[0]->VAO);
 
+		if (damonsters.size() == 0) {
+			std::cout << "Everybody died..." << std::endl;
+		}
+
+		// For loop, iterating through each "monster" once.
+		for (int i = 0; i < damonsters.size();) {
+			if (damonsters[i].mesh.position.x > 30|| damonsters[i].mesh.position.z> 30||
+					damonsters[i].mesh.position.x < -30|| damonsters[i].mesh.position.z> -30) {
+				damonsters[i].mesh.position.x = std::rand() % 10;
+				damonsters[i].mesh.position.z = std::rand() % 10;
+				damonsters[i].mesh.movementSpeed -= 40;
+			}
+
+		    // Deleted bool, if deleted is true, the things gets deleted in the else statement otherwise the process is allowed to continue.
+			if (damonsters[i].IsDeleted != true) {
+				std::cout << damonsters[i].energy << std::endl;
+
+				// Drains energy based on speed and mass. Mass particularly but didn't seem to stop "fortress" cubes.
+				damonsters[i].energy -= damonsters[i].speed * pow(damonsters[i].mass, 3);
+
+				if (damonsters[i].energy > 0) {
+					std::cout << damonsters[i].speed << "speed" << std::endl;
+
+					if (damonsters[i].energy >= 2000000) {
+						if (damonsters.size() < 80) {
+							CE::core::Object cubemesh(vertices, false, true);
+							CE::AI::CubeMonster monster = damonsters[i];
+
+							monster.speed *= (std::rand() % 3 + 99) / 1000000000000000 + 1 ;
+							monster.mass *= (std::rand() % 3 + 99) / 10000000000000000;
+							monster.energy = 4000000;
+							monster.mesh.translate(glm::vec3(damonsters[i].mesh.position.x + std::rand() % 6 - 3, 0, damonsters[i].mesh.position.z + std::rand() % 6 - 3));
+
+							damonsters.push_back(monster);
+							damonsters[i].energy -= 4000;
+						}
+					}
+
+					damonsters[i].mesh.movementSpeed = damonsters[i].speed; // You can change each cube's speed, default 2.5f
+					damonsters[i].mesh.translate({std::rand() % 3 - 1, 0,  std::rand() % 3 - 1}, deltaTime);
+					damonsters[i].mesh.set(&cubeShader);
+					damonsters[i].mesh.draw();
+
+					i++;
+				} else {
+					damonsters.erase(damonsters.begin() + i);
+				}
+			} else {
+				damonsters.erase(damonsters.begin() + i);
+			}
+		}
+		for (int i = 0; i < damonsters.size(); i++) {
+			for (int j = 0; j < damonsters.size(); j++)
+				damonsters[i].MeetAndKill(damonsters[j]);
+		}
+		glBindVertexArray(cubes[0]->VAO);
+
 		// Update + render the cubes
 		float rd = 0.0f;
-		for (int i = 0; i <= 9; i++) {
+		for (int i = 0; i <= 5; i++) {
 			cubes[i]->rotate(rd, {1.0f, 0.3f, 0.5f});
 			cubes[i]->set(&cubeShader);
 			cubes[i]->draw();
@@ -195,7 +261,7 @@ int main() {
 		// If you do not add delta time, the cube will almost instantaneously jump right to that position in world space, NOT move by that much, it will teleport there.
 		cubes[1]->translate({ 2.0f,  5.0f, -15.0f });
 
-		// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
+		// Unbind VAO (It's always a good thing to unbind buffers/arrays to prevent strange bugs)
 		glBindVertexArray(0);
 
 		window.update();

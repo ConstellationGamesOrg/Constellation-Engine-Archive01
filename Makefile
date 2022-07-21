@@ -1,4 +1,4 @@
-COMPILE_FILES = src/main.cpp src/core/graphics/graphics.cpp src/core/window/window.cpp src/utils/utils.cpp src/core/input/input.cpp contrib/glad/src/glad.cpp
+COMPILE_FILES = src/main.cpp src/core/graphics/graphics.cpp src/core/window/window.cpp src/utils/utils.cpp src/core/input/input.cpp src/AI/cubeMonster/cubeMonster.cpp contrib/glad/src/glad.cpp
 
 MAC_PARAMS = -I/Library/Frameworks/OpenGL.framework/Headers/ -I/Library/Frameworks/GLUT.framework/Headers/ -F/Library/Frameworks -framework Cocoa -framework OpenGL -framework GLUT -framework IOKit -framework CoreVideo
 

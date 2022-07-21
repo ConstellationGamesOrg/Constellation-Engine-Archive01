@@ -9,6 +9,7 @@
 #include "core/graphics/graphics.hpp"
 #include "core/camera/camera.hpp"
 #include "core/input/input.hpp"
+#include "AI/cubeMonster/cubeMonster.hpp"
 
 // 3rd Party Library Headers
 // -------------------------
@@ -23,7 +24,6 @@
 // ------------------------
 #include <iostream>
 #include <vector>
-
 
 int main();
 
