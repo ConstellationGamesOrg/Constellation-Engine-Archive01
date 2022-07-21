@@ -9,6 +9,7 @@
 #include "core/graphics/graphics.hpp"
 #include "core/camera/camera.hpp"
 #include "core/input/input.hpp"
+#include "AI/cubeMonster/cubeMonster.hpp"
 
 // 3rd Party Library Headers
 // -------------------------
@@ -26,27 +27,6 @@
 #include <unordered_map>
 #include <cmath>
 
-using std::vector;
-using std::rand; 
-
 int main();
-
-
-
-class CubeMonster {
-public:
-	bool IsDeleted;
-	float speed;
-	glm::vec3 startingposition;
-	float mass;
-	float energy;
-	CE::core::Object mesh;
-	CubeMonster(bool IsDeleted1, float speed1, glm::vec3 startingposition1, float mass1, float energy1, CE::core::Object* mesh1);
-};
-
-vector<CubeMonster> tobedestroyed;
-vector<CubeMonster> damonsters;
-vector<int> todie;
-vector<int> alreadytodie;
 
 #endif // MAIN_HPP
