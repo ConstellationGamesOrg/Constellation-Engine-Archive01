@@ -128,7 +128,7 @@ int main() {
 		-0.5f,  0.5f,  0.5f,   0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f
 	};
-	
+
 	// Create cubes
 	for (int i = 0; i < 20; i++) {
 		CE::core::Object cubemesh(vertices, false, true);
@@ -186,7 +186,7 @@ int main() {
 	 	texture1.bindTexture();
 
 		// Bind the cubeVAO
-		glBindVertexArray(cube1.VAO);
+		glBindVertexArray(cubes[0]->VAO);
 
 		if (damonsters.size() == 0) {
 			std::cout << "0 left alive!" << std::endl;
