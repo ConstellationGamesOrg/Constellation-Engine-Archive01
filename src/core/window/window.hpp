@@ -35,6 +35,7 @@ namespace CE {
 			const char* title;
 
 			bool shouldClose = false;
+			float dt = 1.0f;
 
 			glm::vec4 clearColor;
 
@@ -43,6 +44,8 @@ namespace CE {
 			int update();
 			int clear();
 			int cleanup();
+		private:
+			float lastTime = 0.0f;
 		};
 	}
 }

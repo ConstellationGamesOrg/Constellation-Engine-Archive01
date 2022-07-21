@@ -31,14 +31,12 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 // Input callback. Process all input
 void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
-
-	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)     // Check if the ESC key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
 		glfwSetWindowShouldClose(window.window, true);                   // If so, close the window
-	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)          // Check if the Q key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)      // Check if the Q key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                       // If so, change draw mode to GL_FILL
-	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)          // Check if the E key was pressed
+	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)      // Check if the E key was pressed
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                       // If so, change draw mode to GL_LINE / wireframe
-
 
 	if (input.getKeyPress(window.window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::FORWARD, deltaTime);
@@ -52,26 +50,16 @@ void processInput(CE::core::Window window, CE::core::Camera* camera, float delta
 		camera->ProcessKeyboard(CE::core::UP, deltaTime);
 	if (input.getKeyPress(window.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera->ProcessKeyboard(CE::core::DOWN, deltaTime);
+
+	if (glfwGetKey(window.window, GLFW_KEY_F) == GLFW_PRESS)
+		glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	if (glfwGetMouseButton(window.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+		glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 // Mouse callback. Whenever the mouse moves, this function is called
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
-	float xpos = static_cast<float>(xposIn);
-	float ypos = static_cast<float>(yposIn);
-
-	if (firstMouse) {
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
-	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to top
-
-	lastX = xpos;
-	lastY = ypos;
-
-	camera.ProcessMouseMovement(xoffset, yoffset);
+	camera.ProcessMouseMovement(window, xposIn, yposIn);
 }
 
 // Scroll callback. Whenever the mouse scroll wheel scrolls, this function is called
@@ -88,9 +76,6 @@ int main() {
 	glfwSetFramebufferSizeCallback(window.window, framebufferSizeCallback);
 	glfwSetCursorPosCallback(window.window, mouse_callback);
 	glfwSetScrollCallback(window.window, scroll_callback);
-
-	// Tell GLFW to capture the mouse
-	glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	window.clearColor = {0.5f, 0.0f, 0.4f, 1.0f};
 
@@ -143,16 +128,8 @@ int main() {
 		-0.5f,  0.5f,  0.5f,   0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,   0.0f, 1.0f
 	};
-
-	// Create 10 cubes
-	CE::core::Object cube1(vertices, false, true);
-	CE::core::Object cube2(vertices, false, true);
-	CE::core::Object cube3(vertices, false, true);
-	CE::core::Object cube4(vertices, false, true);
-	CE::core::Object cube5(vertices, false, true);
-	CE::core::Object cube6(vertices, false, true);
-
-
+	
+	// Create cubes
 	for (int i = 0; i < 20; i++) {
 		CE::core::Object cubemesh(vertices, false, true);
 		glm::vec3 value = {(float)(std::rand() % 10), 0.0f, (float)(std::rand() % 10)};
@@ -162,14 +139,20 @@ int main() {
 		damonsters.push_back(monster);
 	}
 
-	// Set their starting position
-	cube1.translate({   0.0f,  0.0f,   2.3f});
-	cube2.translate({   2.0f,  0.0f,   4.5f});
-	cube3.translate({  -1.5f,  0.0f,   6.1f});
-	cube4.translate({  -3.8f,  0.0f,   5.6f});
-	cube5.translate({   2.4f,  0.0f,   4.7f});
-	cube6.translate({  -1.7f,  0.0f,   4.3f});
+	std::vector <CE::core::Object*> cubes;
 
+	for (int i = 0; i <= 5; i++) {
+		CE::core::Object* newCubePointer = new CE::core::Object(vertices, false, true);
+		cubes.push_back(newCubePointer);
+	}
+
+	// Set each cube's starting position
+	cubes[0]->translate( {  0.0f,   0.0f,   0.0f});
+	cubes[1]->translate( {  2.0f,   5.0f, -15.0f});
+	cubes[2]->translate( { -1.5f,  -2.2f,  -2.5f});
+	cubes[3]->translate( { -3.8f,  -2.0f, -12.3f});
+	cubes[4]->translate( {  2.4f,  -0.4f,  -3.5f});
+	cubes[5]->translate( { -1.7f,   3.0f,  -7.5f});
 
 	// Load and create a texture
 	// -------------------------
@@ -185,31 +168,22 @@ int main() {
 	// Program loop
 	// ------------
 	while (!window.shouldClose) {
-		// Per-frame time logic
-		// --------------------
-		float currentFrame = static_cast<float>(glfwGetTime());
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
 		// Input
 		// -----
-		processInput(window, &camera, deltaTime);
+		processInput(window, &camera, window.dt);
 
 		// Render
 		// ------
 		window.clear();
-		// graphics.render();
-
-		// TODO: Move all this stuff to graphics render
 
 		// Activate shader
+		cubeShader.use();
 
 		// Update projection and view matrix
 		window.updateMatrices(&cubeShader, &camera);
 
 		// Bind texture1
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture1.textureID);
+	 	texture1.bindTexture();
 
 		// Bind the cubeVAO
 		glBindVertexArray(cube1.VAO);
@@ -303,10 +277,33 @@ int main() {
 		cube6.draw(); // Now actually draw the cube!
 		*/
 
+		glBindVertexArray(cubes[0]->VAO);
+
+		/*
+		// Update + render the cubes
+		float rd = 0.0f;
+		for (int i = 0; i <= 9; i++) {
+			cubes[i]->rotate(rd, {1.0f, 0.3f, 0.5f});
+			cubes[i]->set(&cubeShader);
+			cubes[i]->draw();
+
+			rd += 20.0f;
+		}
+
+		cubes[0]->movementSpeed = 0.5f; // You can change each cube's speed, default 2.5f
+		cubes[0]->translate({ 0.0f, 0.0f, -1.0f }, window.dt); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+
+		// If you do not add delta time, the cube will almost instantaneously jump right to that position in world space, NOT move by that much, it will teleport there.
+		cubes[1]->translate({ 2.0f,  5.0f, -15.0f }); */
+
 		// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
 		glBindVertexArray(0);
-		std::cout << damonsters.size() << std::endl;
+
 		window.update();
+	}
+
+	for (size_t i = 0; i < cubes.size(); i++) {
+		delete cubes[i];
 	}
 
 	window.cleanup();

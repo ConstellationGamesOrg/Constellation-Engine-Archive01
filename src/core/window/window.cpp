@@ -28,10 +28,14 @@ namespace CE {
 				return -1;
 			}
 
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 			// Configure global OpenGL state
 			glEnable(GL_DEPTH_TEST);
-			glEnable(GL_FRAMEBUFFER_SRGB); // Use sRGB
-			glfwSwapInterval(1); // Turn on vsync for smoother rendering and so OpenGL doesn't draw faster than the monitor refresh rate. Otherwise the program might use 100% CPU and GPU
+			glEnable(GL_FRAMEBUFFER_SRGB); // Use the sRGB colourspace
+
+			// Turn on vsync to limit the FPS to the user's monitor refresh rate and improve frame timing
+			glfwSwapInterval(1);
 
 			return 0;
 		}
@@ -51,6 +55,10 @@ namespace CE {
 		}
 
 		int Window::update() {
+			float currentFrame = static_cast<float>(glfwGetTime());
+			dt = currentFrame - lastTime;
+			lastTime = currentFrame;
+
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 
@@ -61,8 +69,7 @@ namespace CE {
 			return 0;
 		}
 
-		int Window::clear()
-		{
+		int Window::clear() {
 			glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
