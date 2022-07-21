@@ -189,7 +189,7 @@ int main() {
 		glBindVertexArray(cubes[0]->VAO);
 
 		if (damonsters.size() == 0) {
-			std::cout << "0 left alive!" << std::endl;
+			std::cout << "Everybody died..." << std::endl;
 		}
 
 		// For loop, iterating through each "monster" once.
@@ -296,7 +296,7 @@ int main() {
 		// If you do not add delta time, the cube will almost instantaneously jump right to that position in world space, NOT move by that much, it will teleport there.
 		cubes[1]->translate({ 2.0f,  5.0f, -15.0f }); */
 
-		// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
+		// Unbind VAO (It's always a good thing to unbind buffers/arrays to prevent strange bugs)
 		glBindVertexArray(0);
 
 		window.update();
