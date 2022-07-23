@@ -55,10 +55,6 @@ namespace CE {
 		}
 
 		int Window::update() {
-			float currentFrame = static_cast<float>(glfwGetTime());
-			dt = currentFrame - lastTime;
-			lastTime = currentFrame;
-
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 
@@ -72,6 +68,14 @@ namespace CE {
 		int Window::clear() {
 			glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			return 0;
+		}
+
+		int Window::updateDeltatime() {
+			float currentFrame = static_cast<float>(glfwGetTime());
+			dt = currentFrame - lastTime;
+			lastTime = currentFrame;
 
 			return 0;
 		}
