@@ -7,7 +7,8 @@
     <ClCompile Include="src\utils\utils.cpp" />
     <ClCompile Include="src\core\graphics\graphics.cpp" />
     <ClCompile Include="src\core\input\input.cpp" />
-    <ClCompile Include="src\AI\cubeMonster\cubeMonster.cpp" />
+    <ClCompile Include="src\core\model\mesh.cpp" />
+    <ClCompile Include="src\core\model\model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AUTHORS.md" />
@@ -16,6 +17,9 @@
     <None Include="README.md" />
     <None Include="data\shaders\cube.vert" />
     <None Include="data\shaders\cube.frag" />
+    <None Include="assimp-vc143-mt.dll" />
+    <None Include="data\models\cube\cube.mtl" />
+    <None Include="data\models\cube\cube.obj" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main.hpp" />
@@ -24,9 +28,11 @@
     <ClInclude Include="src\core\graphics\graphics.hpp" />
     <ClInclude Include="src\core\camera\camera.hpp" />
     <ClInclude Include="src\core\input\input.hpp" />
-    <ClInclude Include="src\AI\cubeMonster\cubeMonster.hpp" />
+    <ClInclude Include="src\core\model\mesh.hpp" />
+    <ClInclude Include="src\core\model\model.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\textures\PixelLogo.png" />
+    <Image Include="data\models\cube\CubeDiffuse.png" />
   </ItemGroup>
 </Project>

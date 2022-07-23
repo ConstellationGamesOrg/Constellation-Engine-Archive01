@@ -5,9 +5,13 @@
 ### Added
 * Added mouse unlock with 'F', relocks when clicking the tab
 * Added Assimp dependency
+* Added model and mesh classes
+* Added a white cube model
+* Added basic model loading example in main.cpp
 
 ### Removed
 * Removed x86 build option (Assimp build is only for x64)
+* Removed old object creation
 
 -------------------------------------------------------------------------------------------------------------
 

@@ -44,64 +44,6 @@ namespace CE {
 			return 0;
 		}
 
-		Object::Object() {
-		}
-
-		Object::Object(std::vector<float> vertices, bool normal, bool texture) {
-			glGenBuffers(1, &VBO);
-			glGenVertexArrays(1, &VAO);
-
-			// VBO
-			// Copy our vertices array in a buffer for OpenGL to use
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * 3 * sizeof(float), &vertices.front(), GL_STATIC_DRAW); // https://stackoverflow.com/questions/7173494/vbos-with-stdvector
-			// GL_STATIC_DRAW: Data will be modified once and used many times
-			// GL_DYNAMIC_DRAW: Data will be modified repeatedly and used many times
-			// GL_STREAM_DRAW: Data will be modified once and used at most a few times
-
-
-			// VAO
-			// Bind the Vertex Array Object first, then set vertex buffer(s), and then configure vertex attributes(s)
-			glBindVertexArray(VAO);
-
-			// Then set our vertex attributes pointers
-			if (normal == true && texture == true)
-			{
-				// Position attribute
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-				glEnableVertexAttribArray(0);
-				// Normal attribute
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-				glEnableVertexAttribArray(1);
-				// Texture attribute
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-				glEnableVertexAttribArray(2);
-			}
-			else if (normal == true)
-			{
-				// Position attribute
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-				glEnableVertexAttribArray(0);
-				// Normal attribute
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-				glEnableVertexAttribArray(1);
-			}
-			else if (texture == true)
-			{
-				// Position attribute
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-				glEnableVertexAttribArray(0);
-				// Texture attribute
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-				glEnableVertexAttribArray(1);
-			}
-
-
-			// Unbind VAO (It's always a good thing to unbind any buffer/array to prevent strange bugs)
-			glBindVertexArray(0);
-		}
-
 		// Constructor generates the shader on the fly
 		// ------------------------------------------------------------------------
 		Shader::Shader(const char* vertexPath, const char* fragmentPath) {
@@ -243,73 +185,6 @@ namespace CE {
 					std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
 				}
 			}
-		}
-
-		void Texture::loadTexture(const char* path) {
-			stbi_set_flip_vertically_on_load(true);
-			unsigned int textureID;
-			glGenTextures(1, &textureID);
-
-			int width, height, nrComponents;
-			unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
-			if (data) {
-				GLenum format;
-				if (nrComponents == 1)
-					format = GL_RED;
-				else if (nrComponents == 3)
-					format = GL_RGB;
-				else if (nrComponents == 4)
-					format = GL_RGBA;
-
-				glBindTexture(GL_TEXTURE_2D, textureID);
-				glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-				glGenerateMipmap(GL_TEXTURE_2D);
-
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-				stbi_image_free(data);
-			}
-			else {
-				std::cout << "Texture failed to load at path: " << path << std::endl;
-				stbi_image_free(data);
-			}
-		}
-
-		void Texture::bindTexture() {
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureID);
-		}
-
-		void Object::translate(glm::vec3 newPosition) {
-			model = glm::translate(model, position = newPosition);
-		}
-
-		void Object::translate(glm::vec3 newPosition, float deltaTime) {
-			float velocity = movementSpeed * deltaTime;
-			model = glm::translate(model, position += newPosition * velocity);
-		}
-
-		void Object::rotate(float angle, glm::vec3 axis) {
-			model = glm::rotate(model, glm::radians(angle), axis);
-		}
-
-		void Object::set(CE::core::Shader* shader) {
-			shader->setMat4("model", model);
-			model = glm::mat4(1.0f);
-			model = glm::translate(model, position);
-		}
-
-		void Object::draw() {
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-
-		Object::~Object()
-		{
-			glDeleteVertexArrays(1, &VAO);
-			glDeleteBuffers(1, &VBO);
 		}
 	}
 }

@@ -73,10 +73,23 @@ int main() {
 	glfwSetScrollCallback(window.window, scroll_callback);
 
 	window.clearColor = { 0.5f, 0.0f, 0.4f, 1.0f };
+	//window.clearColor = { 0.2f, 0.3f, 0.3f, 1.0f };
+
+	// Build and compile our shader program
+	// ------------------------------------
+	CE::core::Shader ourShader("data/shaders/cube.vert", "data/shaders/cube.frag");
+
+	// Load our model
+	// --------------
+	CE::core::Model ourModel("data/models/cube/cube.obj");
 
 	// Program loop
 	// ------------
 	while (!window.shouldClose) {
+		// Deltatime
+		// ---------
+		window.updateDeltatime();
+
 		// Input
 		// -----
 		processInput(window, &camera, window.dt);
@@ -84,6 +97,16 @@ int main() {
 		// Render
 		// ------
 		window.clear();
+
+		// Activate shader
+		ourShader.use();
+
+		window.updateMatrices(&ourShader, &camera);
+
+		// Render the loaded model
+		glm::mat4 model = glm::mat4(1.0f);
+		ourShader.setMat4("model", model);
+		ourModel.Draw(ourShader);
 
 		window.update();
 	}

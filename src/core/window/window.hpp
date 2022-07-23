@@ -43,6 +43,7 @@ namespace CE {
 			int updateMatrices(CE::core::Shader* shader, CE::core::Camera* camera);
 			int update();
 			int clear();
+			int updateDeltatime();
 			int cleanup();
 		private:
 			float lastTime = 0.0f;
