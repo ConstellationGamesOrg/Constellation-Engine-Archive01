@@ -36,6 +36,9 @@ namespace CE {
 
 			bool shouldClose = false;
 			float dt = 1.0f;
+			int fps = 0;
+
+			int mRefreshRate = 60;
 
 			glm::vec4 clearColor;
 
@@ -45,7 +48,9 @@ namespace CE {
 			int clear();
 			int cleanup();
 		private:
-			float lastTime = 0.0f;
+			double lastTime;
+			double lastTime1;
+			int fCount;
 		};
 	}
 }

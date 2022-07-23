@@ -69,8 +69,8 @@ namespace CE {
 		class Texture {
 		public:
 			unsigned int textureID;
-			void loadTexture(const char* path);
-			void bindTexture();
+			void load(const char* path);
+			void bind();
 		};
 
 		class Object {

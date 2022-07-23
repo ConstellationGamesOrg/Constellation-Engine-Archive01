@@ -22,6 +22,8 @@
 
 // Standard Library Headers
 // ------------------------
+#include <stdio.h>
+
 #include <iostream>
 #include <vector>
 

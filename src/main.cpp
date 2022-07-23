@@ -147,17 +147,17 @@ int main() {
 	}
 
 	// Set each cube's starting position
-	cubes[0]->translate( {  0.0f,   0.0f,   0.0f});
-	cubes[1]->translate( {  2.0f,   5.0f, -15.0f});
-	cubes[2]->translate( { -1.5f,  -2.2f,  -2.5f});
-	cubes[3]->translate( { -3.8f,  -2.0f, -12.3f});
-	cubes[4]->translate( {  2.4f,  -0.4f,  -3.5f});
-	cubes[5]->translate( { -1.7f,   3.0f,  -7.5f});
+	cubes[0]->translate({  0.0f,   0.0f,   0.0f});
+	cubes[1]->translate({  2.0f,   5.0f, -15.0f});
+	cubes[2]->translate({ -1.5f,  -2.2f,  -2.5f});
+	cubes[3]->translate({ -3.8f,  -2.0f, -12.3f});
+	cubes[4]->translate({  2.4f,  -0.4f,  -3.5f});
+	cubes[5]->translate({ -1.7f,   3.0f,  -7.5f});
 
 	// Load and create a texture
 	// -------------------------
 	CE::core::Texture texture1;
-	texture1.loadTexture("data/textures/PixelLogo.png");
+	texture1.load("data/textures/PixelLogo.png");
 
 	cubeShader.use();
 
@@ -168,6 +168,10 @@ int main() {
 	// Program loop
 	// ------------
 	while (!window.shouldClose) {
+		// Update dt, fps, etc.
+		// --------------------
+		window.update();
+
 		// Input
 		// -----
 		processInput(window, &camera, window.dt);
@@ -176,14 +180,11 @@ int main() {
 		// ------
 		window.clear();
 
-		// Activate shader
 		cubeShader.use();
 
-		// Update projection and view matrix
 		window.updateMatrices(&cubeShader, &camera);
 
-		// Bind texture1
-	 	texture1.bindTexture();
+	 	texture1.bind();
 
 		// Bind the cubeVAO
 		glBindVertexArray(cubes[0]->VAO);
@@ -193,24 +194,20 @@ int main() {
 		}
 
 		// For loop, iterating through each "monster" once.
-		for (int i = 0; i < damonsters.size();) {
-			if (damonsters[i].mesh.position.x > 30|| damonsters[i].mesh.position.z> 30||
-					damonsters[i].mesh.position.x < -30|| damonsters[i].mesh.position.z> -30) {
+		for (long unsigned int i = 0; i < damonsters.size();) {
+			if (damonsters[i].mesh.position.x > 30 || damonsters[i].mesh.position.z> 30 ||
+					damonsters[i].mesh.position.x < -30|| damonsters[i].mesh.position.z > -30) {
 				damonsters[i].mesh.position.x = std::rand() % 10;
 				damonsters[i].mesh.position.z = std::rand() % 10;
 				damonsters[i].mesh.movementSpeed -= 40;
 			}
 
 		    // Deleted bool, if deleted is true, the things gets deleted in the else statement otherwise the process is allowed to continue.
-			if (damonsters[i].IsDeleted != true) {
-				std::cout << damonsters[i].energy << std::endl;
-
+			if (damonsters[i].deleted != true) {
 				// Drains energy based on speed and mass. Mass particularly but didn't seem to stop "fortress" cubes.
 				damonsters[i].energy -= damonsters[i].speed * pow(damonsters[i].mass, 3);
 
 				if (damonsters[i].energy > 0) {
-					std::cout << damonsters[i].speed << "speed" << std::endl;
-
 					if (damonsters[i].energy >= 2000000) {
 						if (damonsters.size() < 80) {
 							CE::core::Object cubemesh(vertices, false, true);
@@ -238,11 +235,11 @@ int main() {
 			} else {
 				damonsters.erase(damonsters.begin() + i);
 			}
+		} for (long unsigned int i = 0; i < damonsters.size(); i++) {
+			for (long unsigned int j = 0; j < damonsters.size(); j++)
+				damonsters[i].meetAndKill(damonsters[j]);
 		}
-		for (int i = 0; i < damonsters.size(); i++) {
-			for (int j = 0; j < damonsters.size(); j++)
-				damonsters[i].MeetAndKill(damonsters[j]);
-		}
+
 		glBindVertexArray(cubes[0]->VAO);
 
 		// Update + render the cubes
@@ -256,15 +253,13 @@ int main() {
 		}
 
 		cubes[0]->movementSpeed = 0.5f; // You can change each cube's speed, default 2.5f
-		cubes[0]->translate({ 0.0f, 0.0f, -1.0f }, window.dt); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
+		cubes[0]->translate({ 0.0f, 0.0f, -1.0f}, window.dt); // This will move the cube by 0.1 on the z axis every frame. Its slow instead of really fast because of delta time
 
 		// If you do not add delta time, the cube will almost instantaneously jump right to that position in world space, NOT move by that much, it will teleport there.
-		cubes[1]->translate({ 2.0f,  5.0f, -15.0f });
+		cubes[1]->translate({ 2.0f,  5.0f, -15.0f});
 
 		// Unbind VAO (It's always a good thing to unbind buffers/arrays to prevent strange bugs)
 		glBindVertexArray(0);
-
-		window.update();
 	}
 
 	for (size_t i = 0; i < cubes.size(); i++) {

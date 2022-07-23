@@ -30,6 +30,10 @@ namespace CE {
 
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
+			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+			mRefreshRate = mode->refreshRate;
+
 			// Configure global OpenGL state
 			glEnable(GL_DEPTH_TEST);
 			glEnable(GL_FRAMEBUFFER_SRGB); // Use the sRGB colourspace
@@ -55,9 +59,20 @@ namespace CE {
 		}
 
 		int Window::update() {
-			float currentFrame = static_cast<float>(glfwGetTime());
-			dt = currentFrame - lastTime;
-			lastTime = currentFrame;
+			double currentTime = static_cast<double>(glfwGetTime());
+			fCount++;
+			dt = currentTime - lastTime;
+
+			if (currentTime - lastTime1 >= 1.0) {
+				fps = fCount;
+
+				printf("FPS: %d\n", fps);
+
+				fCount = 0;
+				lastTime1 = currentTime;
+			}
+
+			lastTime = currentTime;
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
