@@ -29,6 +29,8 @@ namespace CE {
 			bool checkCollision(CubeMonster cubemonster);
 			void meetAndKill(CubeMonster cubemonster);
 		};
+
+		void updateMonstersArray(std::vector<CE::AI::CubeMonster> damonsters, double dt, std::vector<float> vertices, CE::core::Shader cubeShader);
 	}
 }
 
