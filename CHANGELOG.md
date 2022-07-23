@@ -4,6 +4,7 @@
 
 ### Added
 * Added mouse unlock with 'F', relocks when clicking the tab
+* Added Assimp dependency
 
 -------------------------------------------------------------------------------------------------------------
 
