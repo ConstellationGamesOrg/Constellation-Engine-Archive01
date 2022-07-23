@@ -6,6 +6,9 @@
 * Added mouse unlock with 'F', relocks when clicking the tab
 * Added Assimp dependency
 
+### Removed
+* Removed x86 build option (Assimp build is only for x64)
+
 -------------------------------------------------------------------------------------------------------------
 
 ## [0.3.0]
