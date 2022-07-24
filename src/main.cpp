@@ -81,7 +81,7 @@ int main() {
 
 	// Load our model
 	// --------------
-	CE::core::Model ourModel("data/models/cube/cube.obj");
+	CE::core::Model ourModel("data/models/cube/ConstellationGamesCube.obj");
 
 	// Program loop
 	// ------------
