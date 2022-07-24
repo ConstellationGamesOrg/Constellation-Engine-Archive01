@@ -2,20 +2,10 @@
 
 #include "main.hpp"
 
-// Settings
-// --------
-// Timing
-float deltaTime = 0.0f;	// deltaTime is the time between current frame and last frame
-float lastFrame = 0.0f;
-
 CE::core::Graphics graphics;
 CE::core::Window window;
 CE::core::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 CE::core::Input input;
-
-float lastX = window.width / 2.0f;
-float lastY = window.height / 2.0f;
-bool firstMouse = true;
 
 // Callback functions
 // ------------------
@@ -72,8 +62,8 @@ int main() {
 	glfwSetCursorPosCallback(window.window, mouse_callback);
 	glfwSetScrollCallback(window.window, scroll_callback);
 
-	window.clearColor = { 0.5f, 0.0f, 0.4f, 1.0f };
-	//window.clearColor = { 0.2f, 0.3f, 0.3f, 1.0f };
+	//window.clearColor = { 0.5f, 0.0f, 0.4f, 1.0f };
+	window.clearColor = { 0.2f, 0.3f, 0.3f, 1.0f };
 
 	// Build and compile our shader program
 	// ------------------------------------
