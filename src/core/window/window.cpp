@@ -32,7 +32,6 @@ namespace CE {
 
 			// Configure global OpenGL state
 			glEnable(GL_DEPTH_TEST);
-			glEnable(GL_FRAMEBUFFER_SRGB); // Use the sRGB colourspace
 
 			// Turn on vsync to limit the FPS to the user's monitor refresh rate and improve frame timing
 			glfwSwapInterval(1);
