@@ -76,7 +76,7 @@ int main() {
 
 	// Load our model
 	// --------------
-	CE::core::Model ourModel("data/models/human/PS1Human.obj");
+	CE::core::Model ourModel("data/models/cube/cube.obj");
 
 	// Program loop
 	// ------------
