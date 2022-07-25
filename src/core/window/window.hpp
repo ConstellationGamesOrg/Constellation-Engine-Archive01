@@ -38,15 +38,19 @@ namespace CE {
 			float dt = 1.0f;
 
 			glm::vec4 clearColor;
+			void(*inputCallback)(CE::core::Window*, CE::core::Camera*);
 
 			int create(int width, int height, std::string title);
 			int updateMatrices(CE::core::Shader* shader, CE::core::Camera* camera);
-			int update();
+			int update(CE::core::Camera* camera);
 			int clear();
-			int updateDeltatime();
+			int refresh();
 			int cleanup();
+			int setInputCallback(void(*func)(CE::core::Window*, CE::core::Camera*));
 		private:
 			float lastTime = 0.0f;
+
+			void defaultInputs();
 		};
 	}
 }
