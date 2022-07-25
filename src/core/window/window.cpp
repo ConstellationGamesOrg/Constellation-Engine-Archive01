@@ -54,7 +54,7 @@ namespace CE {
 			return 0;
 		}
 
-		int Window::update() {
+		int Window::refresh() {
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 
@@ -72,16 +72,30 @@ namespace CE {
 			return 0;
 		}
 
-		int Window::updateDeltatime() {
+		int Window::update(CE::core::Camera* camera) {
 			float currentFrame = static_cast<float>(glfwGetTime());
 			dt = currentFrame - lastTime;
 			lastTime = currentFrame;
+
+			inputCallback(this, camera);
 
 			return 0;
 		}
 
 		int Window::cleanup() {
 			glfwTerminate();
+
+			return 0;
+		}
+
+		int Window::setInputCallback(void(*func)(CE::core::Window*, CE::core::Camera*)) {
+			if (func == nullptr) {
+				printf("ERROR: Passing the input callback function to setInputCallback FAILED!\n");
+
+				return -1;
+			}
+
+			inputCallback = func;
 
 			return 0;
 		}

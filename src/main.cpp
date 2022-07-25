@@ -7,6 +7,9 @@ CE::core::Window window;
 CE::core::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 CE::core::Input input;
 
+bool moved;
+CE::core::Camera_Movement cMovement;
+
 // Callback functions
 // ------------------
 // Whenever the window size changes (by OS or user resize) this callback function executes
@@ -15,31 +18,31 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 }
 
 // Input callback. Process all input
-void processInput(CE::core::Window window, CE::core::Camera* camera, float deltaTime) {
-	if (input.getKeyPress(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
-		glfwSetWindowShouldClose(window.window, true);                   // If so, close the window
-	if (input.getKeyPress(window.window, GLFW_KEY_Q) == GLFW_PRESS)      // Check if the Q key was pressed
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                       // If so, change draw mode to GL_FILL
-	if (input.getKeyPress(window.window, GLFW_KEY_E) == GLFW_PRESS)      // Check if the E key was pressed
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                       // If so, change draw mode to GL_LINE / wireframe
+void processInput(CE::core::Window* window, CE::core::Camera* camera) {
+	if (input.getKeyPress(window->window, KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
+		glfwSetWindowShouldClose(window->window, true);               // If so, close the window
+	if (input.getKeyPress(window->window, KEY_Q) == GLFW_PRESS)       // Check if the Q key was pressed
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                    // If so, change draw mode to GL_FILL
+	if (input.getKeyPress(window->window, KEY_E) == GLFW_PRESS)       // Check if the E key was pressed
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                    // If so, change draw mode to GL_LINE / wireframe
 
-	if (input.getKeyPress(window.window, GLFW_KEY_W) == GLFW_PRESS)
-		camera->ProcessKeyboard(CE::core::FORWARD, deltaTime);
-	if (input.getKeyPress(window.window, GLFW_KEY_S) == GLFW_PRESS)
-		camera->ProcessKeyboard(CE::core::BACKWARD, deltaTime);
-	if (input.getKeyPress(window.window, GLFW_KEY_A) == GLFW_PRESS)
-		camera->ProcessKeyboard(CE::core::LEFT, deltaTime);
-	if (input.getKeyPress(window.window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->ProcessKeyboard(CE::core::RIGHT, deltaTime);
-	if (input.getKeyPress(window.window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera->ProcessKeyboard(CE::core::UP, deltaTime);
-	if (input.getKeyPress(window.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera->ProcessKeyboard(CE::core::DOWN, deltaTime);
+	if (input.getKeyPress(window->window, KEY_W) == 1)
+		camera->ProcessKeyboard(CE::core::FORWARD, window->dt);
+	if (input.getKeyPress(window->window, GLFW_KEY_S) == 1)
+		camera->ProcessKeyboard(CE::core::BACKWARD, window->dt);
+	if (input.getKeyPress(window->window, KEY_A) == 1)
+		camera->ProcessKeyboard(CE::core::LEFT, window->dt);
+	if (input.getKeyPress(window->window, KEY_D) == 1)
+		camera->ProcessKeyboard(CE::core::RIGHT, window->dt);
+	if (input.getKeyPress(window->window, KEY_SPACE) == 1)
+		camera->ProcessKeyboard(CE::core::UP, window->dt);
+	if (input.getKeyPress(window->window, KEY_LEFT_SHIFT) == 1)
+		camera->ProcessKeyboard(CE::core::DOWN, window->dt);
 
-	if (glfwGetKey(window.window, GLFW_KEY_F) == GLFW_PRESS)
-		glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	if (glfwGetMouseButton(window.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-		glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (glfwGetKey(window->window, KEY_F) == GLFW_PRESS)
+		glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	if (glfwGetMouseButton(window->window, MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+		glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 // Mouse callback. Whenever the mouse moves, this function is called
@@ -57,6 +60,8 @@ int main() {
 
 	window.create(800, 600, "Constellation Engine");
 
+	window.setInputCallback(processInput);
+
 	// Setup callback functions
 	glfwSetFramebufferSizeCallback(window.window, framebufferSizeCallback);
 	glfwSetCursorPosCallback(window.window, mouse_callback);
@@ -71,18 +76,12 @@ int main() {
 
 	// Load our model
 	// --------------
-	CE::core::Model ourModel("data/models/cube/cube.obj");
+	CE::core::Model ourModel("data/models/human/PS1Human.obj");
 
 	// Program loop
 	// ------------
 	while (!window.shouldClose) {
-		// Deltatime
-		// ---------
-		window.updateDeltatime();
-
-		// Input
-		// -----
-		processInput(window, &camera, window.dt);
+		window.update(&camera);
 
 		// Render
 		// ------
@@ -98,7 +97,7 @@ int main() {
 		ourShader.setMat4("model", model);
 		ourModel.Draw(ourShader);
 
-		window.update();
+		window.refresh();
 	}
 
 	window.cleanup();
