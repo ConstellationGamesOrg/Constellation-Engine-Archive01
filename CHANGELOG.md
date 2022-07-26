@@ -8,6 +8,7 @@
 * Added model and mesh classes
 * Added a white cube model
 * Added basic model loading example in main.cpp
+* Added cubeMonster AI files
 
 ### Removed
 * Removed x86 build option (Assimp build is only for x64)
