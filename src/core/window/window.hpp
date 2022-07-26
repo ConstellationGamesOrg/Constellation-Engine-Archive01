@@ -11,7 +11,18 @@
 // 3rd Party Library Headers
 // -------------------------
 #include <glad/glad.hpp>
-#include <GLFW/glfw3.h>
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef __APPLE__
+#include <SDL2/sdl.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef _WIN32
+#include <SDL.h>
+#include <SDL_opengl.h>
+#endif
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -27,22 +38,27 @@ namespace CE {
 	namespace core {
 		class Window {
 		public:
-			GLFWwindow* window;
+			struct SDL_Window *window;
+			SDL_GLContext mainContext;
 
+			bool fullscreen = false;
 			int width = 800;
 			int height = 600;
 
 			const char* title;
 
 			bool shouldClose = false;
-			float dt = 1.0f;
+			bool mouseCaptured = false;
+			float dt = 0.03f;
 
 			glm::vec4 clearColor;
+			SDL_Event event;
 			void(*inputCallback)(CE::core::Window*, CE::core::Camera*);
 
-			int create(int width, int height, std::string title);
+			int create(int userWidth, int userHeight, std::string userTitle, bool userFullscreen);
 			int updateMatrices(CE::core::Shader* shader, CE::core::Camera* camera);
 			int update(CE::core::Camera* camera);
+			void sdlDie(std::string message);
 			int clear();
 			int refresh();
 			int cleanup();

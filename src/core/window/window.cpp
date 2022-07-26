@@ -5,30 +5,58 @@
 
 namespace CE {
 	namespace core {
-		int Window::create(int userWidth, int userHeight, std::string userTitle) {
+		int Window::create(int userWidth, int userHeight, std::string userTitle, bool userFullscreen) {
 			width = userWidth;
 			height = userHeight;
 			title = userTitle.c_str();
+			fullscreen = userFullscreen;
 
-			// Create the GLFWwindow object
-			window = glfwCreateWindow(width, height, title, NULL, NULL);
+			if (SDL_Init(SDL_INIT_VIDEO) < 0)
+				sdlDie("Couldn't initialize SDL");
+
+			atexit(SDL_Quit);
+			SDL_GL_LoadLibrary(NULL); // Default is fine
+
+			SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+			if (fullscreen) {
+				window = SDL_CreateWindow(
+					userTitle.c_str(),
+					SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+					0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL
+				);
+			} else {
+				window = SDL_CreateWindow(
+					userTitle.c_str(),
+					SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+					width, height, SDL_WINDOW_OPENGL
+				);
+			}
 
 			// Error handling
-			if (!window) {
-				printf("GLFW Window creation FAILED!\n");
-				glfwTerminate();
-				return -1;
+			if (window == NULL) {
+				sdlDie("Couldn't set video mode");
 			}
 
-			glfwMakeContextCurrent(window);
+			mainContext = SDL_GL_CreateContext(window);
 
-			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-				printf("GLAD Initialization FAILED!\n");
-
-				return -1;
+			if (mainContext == nullptr) {
+				sdlDie("Failed to create OpenGL context");
 			}
 
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			printf("OpenGL loaded\n");
+			gladLoadGLLoader(SDL_GL_GetProcAddress);
+			printf("Vendor:   %s\n", glGetString(GL_VENDOR));
+			printf("Renderer: %s\n", glGetString(GL_RENDERER));
+			printf("Version:  %s\n", glGetString(GL_VERSION));
+
+			mouseCaptured = true;
+			SDL_SetRelativeMouseMode(SDL_TRUE);
 
 			// Configure global OpenGL state
 			glEnable(GL_DEPTH_TEST);
@@ -37,7 +65,7 @@ namespace CE {
 #endif
 
 			// Turn on vsync to limit the FPS to the user's monitor refresh rate and improve frame timing
-			glfwSwapInterval(1);
+			SDL_GL_SetSwapInterval(1);
 
 			return 0;
 		}
@@ -57,35 +85,53 @@ namespace CE {
 		}
 
 		int Window::refresh() {
-			glfwSwapBuffers(window);
-			glfwPollEvents();
+			SDL_GL_SwapWindow(window);
+			SDL_PollEvent(&event);
+			SDL_GetWindowSize(window, &width, &height);
 
-			if (glfwWindowShouldClose(window)) {
-				shouldClose = true;
-			}
+			if (mouseCaptured == true)
+				SDL_SetRelativeMouseMode(SDL_TRUE);
+			else if (mouseCaptured == false)
+				SDL_SetRelativeMouseMode(SDL_FALSE);
 
 			return 0;
 		}
 
 		int Window::clear() {
+			glViewport(0, 0, width, height);
 			glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			return 0;
 		}
 
-		int Window::update(CE::core::Camera* camera) {
-			float currentFrame = static_cast<float>(glfwGetTime());
-			dt = currentFrame - lastTime;
-			lastTime = currentFrame;
+		void Window::defaultInputs() {
+			if (event.type == SDL_QUIT) {
+				shouldClose = true;
+			}
+		}
 
+		int Window::update(CE::core::Camera* camera) {
+			//float currentFrame = static_cast<float>(glfwGetTime());
+			//dt = currentFrame - lastTime;
+			//lastTime = currentFrame;
+
+			defaultInputs();
 			inputCallback(this, camera);
 
 			return 0;
 		}
 
+		void Window::sdlDie(std::string message) {
+			fprintf(stderr, "%s: %s\n", message.c_str(), SDL_GetError());
+			exit(2);
+		}
+
 		int Window::cleanup() {
-			glfwTerminate();
+			/*SDL_GL_DeleteContext();
+			SDL_DestroyWindow();
+			SDL_DestroyRenderer();*/
+			SDL_Quit();
 
 			return 0;
 		}

@@ -6,6 +6,18 @@
 // 3rd Party Library Headers
 // -------------------------
 #include <glad/glad.hpp>
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef _WIN32
+#include <SDL.h>
+#include <SDL_opengl.h>
+#endif
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
@@ -26,9 +38,6 @@ namespace CE {
 		public:
 			int versionMajor;
 			int versionMinor;
-
-			int create();
-			int create(int versionMajor, int versionMinor);
 		};
 
 		class Shader {

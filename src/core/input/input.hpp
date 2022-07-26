@@ -3,6 +3,19 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef _WIN32
+#include <SDL.h>
+#include <SDL_opengl.h>
+#endif
+
 // Macro Hell
 #define KEY_UNKNOWN            -1
 
@@ -209,7 +222,7 @@ namespace CE {
 	namespace core {
 		class Input {
 		public:
-			int getKeyPress(GLFWwindow* window, int key);
+			//int getKeyPress(GLFWwindow* window, int key);
 		};
 	}
 }

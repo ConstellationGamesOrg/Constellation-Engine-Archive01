@@ -4,7 +4,19 @@
 // 3rd Party Library Headers
 // -------------------------
 #include <glad/glad.hpp>
-#include <GLFW/glfw3.h>
+
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef _WIN32
+#include <SDL.h>
+#include <SDL_opengl.h>
+#endif
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -93,11 +105,8 @@ namespace CE {
 			}
 
 			// Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-			void ProcessMouseMovement(GLFWwindow* window, double xposIn, double yposIn, GLboolean constrainPitch = true) {
-				if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL) {
-					firstMouse = true;
-					return;
-				}
+			void ProcessMouseMovement(double xposIn, double yposIn, GLboolean constrainPitch = true) {
+				firstMouse = false;
 
 				float xpos = static_cast<float>(xposIn);
 				float ypos = static_cast<float>(yposIn);

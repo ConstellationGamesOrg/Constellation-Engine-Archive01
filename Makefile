@@ -6,9 +6,9 @@ LINUX_LIBS    = -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lrt -lm -lpthread $(LIB
 
 WINDOWS_LIBS  = -l../thirdparty/glfw-3.3.6.bin.WIN32/include/ $(LIBS)
 
-LIBS          = -lassimp -lglfw
+LIBS          = -lassimp -lglfw -lSDL2
 
-DEBUGFLAGS    = -Wall -Wextra -O0
+DEBUGFLAGS    = -std=c++11 -Wall -Wextra -O0
 
 RELEASEFLAGS  = -Wall -O3
 
@@ -16,7 +16,7 @@ all:
 	echo "This makefile is for macOS, linux and windows. If you're on linux type make linux, on windows make windows and on mac, make mac to use this makefile. If this is your first time compiling Constellation Engine, run make archdeps or make debiandeps depending on if you're on a debian-based or arch-based linux distro. On mac type make macdeps to install dependandices."
 
 macdeps:
-	curl -O https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && sudo chmod a+x install.sh && ./install.sh && echo "export PATH=/usr/local/bin:$PATH" >> ~/.zshrc && source ~/.zshrc && brew install glfw assimp
+	curl -O https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && sudo chmod a+x install.sh && ./install.sh && echo "export PATH=/usr/local/bin:$PATH" >> ~/.zshrc && source ~/.zshrc && brew install glfw assimp sdl2
 
 mac:
 	g++ $(RELEASEFLAGS) -Icontrib/ $(MAC_LIBS) $(LIBS) $(COMPILE_FILES) -o main.out
@@ -25,13 +25,13 @@ macdebug:
 	g++ $(DEBUGFLAGS) -Icontrib/ $(MAC_LIBS) $(LIBS) $(COMPILE_FILES) -o main.out && ./main.out
 
 archx11deps:
-	sudo pacman -S glfw-x11 assimp
+	sudo pacman -S glfw-x11 assimp sdl2
 
 archwaylanddeps:
-	sudo pacman -S glfw-wayland assimp
+	sudo pacman -S glfw-wayland assimp sdl2
 
 debiandeps:
-	sudo apt install libglfw3 libglfw3-dev libxi-dev libstb-dev assimp
+	sudo apt install libglfw3 libglfw3-dev libxi-dev libstb-dev libassimp-dev libsdl2-dev
 
 linux:
 	g++ $(RELEASEFLAGS) -o main.out $(COMPILE_FILES) -Icontrib/ $(LINUX_LIBS)

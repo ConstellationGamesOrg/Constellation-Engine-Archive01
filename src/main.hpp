@@ -14,8 +14,18 @@
 // 3rd Party Library Headers
 // -------------------------
 #include <glad/glad.hpp>
-#include <GLFW/glfw3.h>
-
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef __APPLE__
+#include <SDL2/sdl.h>
+#include <SDL2/SDL_opengl.h>
+#endif
+#ifdef _WIN32
+#include <SDL.h>
+#include <SDL_opengl.h>
+#endif
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
