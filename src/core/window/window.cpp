@@ -117,7 +117,11 @@ namespace CE {
 			//lastTime = currentFrame;
 
 			defaultInputs();
-			inputCallback(this, camera);
+
+			if (inputCallback != nullptr)
+				inputCallback(this, camera);
+			else
+				printf("WARNING: the inputCallback function has not been set\n");
 
 			return 0;
 		}
@@ -128,9 +132,8 @@ namespace CE {
 		}
 
 		int Window::cleanup() {
-			/*SDL_GL_DeleteContext();
-			SDL_DestroyWindow();
-			SDL_DestroyRenderer();*/
+			SDL_GL_DeleteContext(mainContext);
+			SDL_DestroyWindow(window);
 			SDL_Quit();
 
 			return 0;

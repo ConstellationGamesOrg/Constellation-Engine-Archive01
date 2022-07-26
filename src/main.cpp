@@ -78,7 +78,9 @@ void scroll_callback() {
 int main() {
 	window.create(800, 600, "Constellation Engine", false);
 
-	window.setInputCallback(processInput);
+	SDL_Event event;
+
+	//window.setInputCallback(processInput);
 
 	// Setup callback functions
 	/*glfwSetFramebufferSizeCallback(window.window, framebufferSizeCallback);
@@ -100,6 +102,10 @@ int main() {
 	// ------------
 	while (!window.shouldClose) {
 		window.update(&camera);
+
+		while(SDL_PollEvent(&event)) {
+			processInput(&window, &camera);
+		}
 
 		int x = 0;
 		int y = 0;
