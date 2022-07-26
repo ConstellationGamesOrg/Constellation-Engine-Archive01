@@ -9,6 +9,7 @@
     <ClCompile Include="src\core\input\input.cpp" />
     <ClCompile Include="src\core\model\mesh.cpp" />
     <ClCompile Include="src\core\model\model.cpp" />
+    <ClCompile Include="src\AI\cubeMonster\cubeMonster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AUTHORS.md" />
@@ -30,6 +31,7 @@
     <ClInclude Include="src\core\input\input.hpp" />
     <ClInclude Include="src\core\model\mesh.hpp" />
     <ClInclude Include="src\core\model\model.hpp" />
+    <ClInclude Include="src\AI\cubeMonster\cubeMonster.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\textures\PixelLogo.png" />
