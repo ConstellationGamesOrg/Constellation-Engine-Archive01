@@ -1,20 +1,20 @@
-# ConstellationEngine
+# Constellation-Engine
 
-![GitHub Repo stars](https://img.shields.io/github/stars/ConstellationGamesOrg/ConstellationEngine?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/ConstellationGamesOrg/ConstellationEngine?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/ConstellationGamesOrg/Constellation-Engine?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/ConstellationGamesOrg/Constellation-Engine?style=social)
 
-![GitHub top language](https://img.shields.io/github/languages/top/ConstellationGamesOrg/ConstellationEngine)
-![Lines of code](https://img.shields.io/tokei/lines/github/ConstellationGamesOrg/ConstellationEngine)
-![GitHub repo size](https://img.shields.io/github/repo-size/ConstellationGamesOrg/ConstellationEngine)
+![GitHub top language](https://img.shields.io/github/languages/top/ConstellationGamesOrg/Constellation-Engine)
+![Lines of code](https://img.shields.io/tokei/lines/github/ConstellationGamesOrg/Constellation-Engine)
+![GitHub repo size](https://img.shields.io/github/repo-size/ConstellationGamesOrg/Constellation-Engine)
 
-![GitHub issues](https://img.shields.io/github/issues/ConstellationGamesOrg/ConstellationEngine)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/ConstellationGamesOrg/ConstellationEngine)
-![GitHub](https://img.shields.io/github/license/ConstellationGamesOrg/ConstellationEngine)
+![GitHub issues](https://img.shields.io/github/issues/ConstellationGamesOrg/Constellation-Engine)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/ConstellationGamesOrg/Constellation-Engine)
+![GitHub](https://img.shields.io/github/license/ConstellationGamesOrg/Constellation-Engine)
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/ConstellationGamesOrg/ConstellationEngine)
-![GitHub all releases](https://img.shields.io/github/downloads/ConstellationGamesOrg/ConstellationEngine/total)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/ConstellationGamesOrg/Constellation-Engine)
+![GitHub all releases](https://img.shields.io/github/downloads/ConstellationGamesOrg/Constellation-Engine/total)
 
-## About ConstellationEngine
+## About Constellation-Engine
 ### An extraordinarily performant game engine
 The **entire** game engine's features will be able to run on an AMD A6-3420M APU, an **_11 year old_** APU from AMD made for **_entry level laptops_**.
 
