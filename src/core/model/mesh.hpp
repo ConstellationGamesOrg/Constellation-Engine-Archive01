@@ -53,7 +53,7 @@ namespace CE {
             void Draw(CE::core::Shader& shader);
 
         private:
-            // Render data 
+            // Render data
             unsigned int VBO, EBO;
 
             // Initializes all the buffer objects/arrays
