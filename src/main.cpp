@@ -5,44 +5,31 @@
 CE::core::Graphics graphics;
 CE::core::Window window;
 CE::core::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-CE::core::Input input;
-
-bool moved;
-CE::core::Camera_Movement cMovement;
 
 // Callback functions
 // ------------------
-// Whenever the window size changes (by OS or user resize) this callback function executes
-void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
-	glViewport(0, 0, width, height);
-}
-
 // Input callback. Process all input
-void processInput(CE::core::Window* window, CE::core::Camera* camera) {
-	if (input.getKeyPress(window->window, KEY_ESCAPE) == GLFW_PRESS) // Check if the ESC key was pressed
-		glfwSetWindowShouldClose(window->window, true);               // If so, close the window
-	if (input.getKeyPress(window->window, KEY_Q) == GLFW_PRESS)       // Check if the Q key was pressed
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);                    // If so, change draw mode to GL_FILL
-	if (input.getKeyPress(window->window, KEY_E) == GLFW_PRESS)       // Check if the E key was pressed
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);                    // If so, change draw mode to GL_LINE / wireframe
+void processInput(CE::core::Window* window) {
+	if (CE::core::input::getKeyPress(window->window, KEY_ESCAPE) == 1) // Check if the ESC key was pressed
+		window->shouldClose = true;                            // If so, close the window
 
-	if (input.getKeyPress(window->window, KEY_W) == 1)
-		camera->ProcessKeyboard(CE::core::FORWARD, window->dt);
-	if (input.getKeyPress(window->window, GLFW_KEY_S) == 1)
-		camera->ProcessKeyboard(CE::core::BACKWARD, window->dt);
-	if (input.getKeyPress(window->window, KEY_A) == 1)
-		camera->ProcessKeyboard(CE::core::LEFT, window->dt);
-	if (input.getKeyPress(window->window, KEY_D) == 1)
-		camera->ProcessKeyboard(CE::core::RIGHT, window->dt);
-	if (input.getKeyPress(window->window, KEY_SPACE) == 1)
-		camera->ProcessKeyboard(CE::core::UP, window->dt);
-	if (input.getKeyPress(window->window, KEY_LEFT_SHIFT) == 1)
-		camera->ProcessKeyboard(CE::core::DOWN, window->dt);
+	if (CE::core::input::getKeyPress(window->window, KEY_W) == 1)
+		camera.ProcessKeyboard(CE::core::FORWARD, window->dt);
+	if (CE::core::input::getKeyPress(window->window, GLFW_KEY_S) == 1)
+		camera.ProcessKeyboard(CE::core::BACKWARD, window->dt);
+	if (CE::core::input::getKeyPress(window->window, KEY_A) == 1)
+		camera.ProcessKeyboard(CE::core::LEFT, window->dt);
+	if (CE::core::input::getKeyPress(window->window, KEY_D) == 1)
+		camera.ProcessKeyboard(CE::core::RIGHT, window->dt);
+	if (CE::core::input::getKeyPress(window->window, KEY_SPACE) == 1)
+		camera.ProcessKeyboard(CE::core::UP, window->dt);
+	if (CE::core::input::getKeyPress(window->window, KEY_LEFT_SHIFT) == 1)
+		camera.ProcessKeyboard(CE::core::DOWN, window->dt);
 
-	if (glfwGetKey(window->window, KEY_F) == GLFW_PRESS)
-		glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	if (glfwGetMouseButton(window->window, MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-		glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (CE::core::input::getKeyPress(window->window, KEY_F) == 1)
+		window->unlockMouse();
+	if (CE::core::input::getKeyPress(window->window, MOUSE_BUTTON_LEFT) == 1)
+		window->lockMouse();
 }
 
 // Mouse callback. Whenever the mouse moves, this function is called
@@ -51,7 +38,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
 }
 
 // Scroll callback. Whenever the mouse scroll wheel scrolls, this function is called
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+void scroll_callback(GLFWwindow*, double, double yoffset) {
 	camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
 
@@ -60,15 +47,13 @@ int main() {
 
 	window.create(800, 600, "Constellation Engine");
 
-	window.setInputCallback(processInput);
+	// Set callback functions
+	window.setKeyboardInputCallback(processInput);
+	window.setMouseInputCallback(mouse_callback);
+	window.setMouseScrollCallback(scroll_callback);
 
-	// Setup callback functions
-	glfwSetFramebufferSizeCallback(window.window, framebufferSizeCallback);
-	glfwSetCursorPosCallback(window.window, mouse_callback);
-	glfwSetScrollCallback(window.window, scroll_callback);
-
-	//window.clearColor = { 0.5f, 0.0f, 0.4f, 1.0f };
-	window.clearColor = { 0.2f, 0.3f, 0.3f, 1.0f };
+	//window.clearColor = {0.5f, 0.0f, 0.4f, 1.0f};
+	window.clearColor = {0.2f, 0.3f, 0.3f, 1.0f};
 
 	// Build and compile our shader program
 	// ------------------------------------
@@ -81,7 +66,7 @@ int main() {
 	// Program loop
 	// ------------
 	while (!window.shouldClose) {
-		window.update(&camera);
+		window.update();
 
 		// Render
 		// ------

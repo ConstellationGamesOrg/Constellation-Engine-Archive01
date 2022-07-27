@@ -32,7 +32,7 @@ void CE::core::Model::loadModel(std::string const& path) {
 void CE::core::Model::processNode(aiNode* node, const aiScene* scene) {
     // Process each mesh located at the current node
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
-        // The node object only contains indices to index the actual objects in the scene. 
+        // The node object only contains indices to index the actual objects in the scene.
         // The scene contains all the data, node is just to keep stuff organized (like relations between nodes).
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(processMesh(mesh, scene));
@@ -69,7 +69,7 @@ CE::core::Mesh CE::core::Model::processMesh(aiMesh* mesh, const aiScene* scene) 
         // Texture coordinates
         if (mesh->mTextureCoords[0]) { // Does the mesh contain texture coordinates?
             glm::vec2 vec;
-            // A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
+            // A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't
             // use models where a vertex can have multiple texture coordinates so we always take the first set (0).
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;
@@ -151,7 +151,7 @@ std::vector<CE::core::Texture> CE::core::Model::loadMaterialTextures(aiMaterial*
     return textures;
 }
 
-unsigned int CE::core::TextureFromFile(const char* path, const std::string& directory, bool flipTexture, bool gamma) {
+unsigned int CE::core::TextureFromFile(const char* path, const std::string& directory, bool flipTexture, bool) {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
