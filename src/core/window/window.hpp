@@ -7,6 +7,7 @@
 // --------------------
 #include "../graphics/graphics.hpp"
 #include "../camera/camera.hpp"
+#include "../input/input.hpp"
 
 // 3rd Party Library Headers
 // -------------------------
@@ -38,21 +39,27 @@ namespace CE {
 			float dt = 1.0f;
 
 			glm::vec4 clearColor;
-			void(*inputCallback)(CE::core::Window*, CE::core::Camera*);
+			void(*keyboardInputCallback)(CE::core::Window*);
 
 			int create(int width, int height, std::string title);
 			int updateMatrices(CE::core::Shader* shader, CE::core::Camera* camera);
-			int update(CE::core::Camera* camera);
+			int update();
 			int clear();
 			int refresh();
 			int cleanup();
-			int setInputCallback(void(*func)(CE::core::Window*, CE::core::Camera*));
+			int unlockMouse();
+			int lockMouse();
+			int setKeyboardInputCallback(void(*func)(CE::core::Window*));
+			int setMouseInputCallback(void(*func)(GLFWwindow*, double, double));
+			int setMouseScrollCallback(void(*func)(GLFWwindow*, double, double));
 		private:
 			float lastTime = 0.0f;
 
-			void defaultInputs();
+			void defaultKeyInputs();
 		};
 	}
 }
+
+void framebufferSizeCallback(GLFWwindow*, int width, int height);
 
 #endif // WINDOW_HPP

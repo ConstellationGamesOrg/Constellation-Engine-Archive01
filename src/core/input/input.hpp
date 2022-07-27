@@ -207,10 +207,9 @@
 
 namespace CE {
 	namespace core {
-		class Input {
-		public:
+		namespace input {
 			int getKeyPress(GLFWwindow* window, int key);
-		};
+		}
 	}
 }
 
